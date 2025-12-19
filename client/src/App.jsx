@@ -10,10 +10,9 @@ export default function App() {
   const ROUTES = useMemo(
     () => ({
       home: { id: "home", label: "home.tsx", path: "/" },
-      projects: { id: "projects", label: "projects.tsx", path: "/projects" },
       experience: { id: "experience", label: "experience.tsx", path: "/experience" },
+      projects: { id: "projects", label: "projects.tsx", path: "/projects" },
       contact: { id: "contact", label: "contact.tsx", path: "/contact" },
-      resume: { id: "resume", label: "resume.md", path: "/resume" },
     }),
     []
   );
@@ -75,7 +74,7 @@ export default function App() {
           Rishika Shivanna - Portfolio
         </div>
 
-        <div className="text-[11px] text-zinc-500">v0.2 (Day 2)</div>
+        <div className="text-[11px] text-zinc-500">v0.2 </div>
       </div>
 
       <div className="flex h-[calc(100vh-2.5rem)]">

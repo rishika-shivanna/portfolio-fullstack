@@ -2,7 +2,7 @@ export const projects = [
   {
     id: "p1",
     title: "Linux Chat Service",
-    tags: ["C", "Sockets", "Threads"],
+    tags: ["Systems", "C", "Sockets", "Threads"],
     featured: true,
     highlights: ["Multi-client chat", "Concurrency", "Robust I/O handling"],
     links: { github: "#", live: "#" }
@@ -10,17 +10,17 @@ export const projects = [
   {
     id: "p2",
     title: "Yelp Footfall Prediction",
-    tags: ["ML", "XGBoost", "AUC 0.89"],
+    tags: ["ML", "XGBoost", "Data", "AUC 0.89"],
     featured: true,
-    highlights: ["Large dataset", "Feature engineering", "Model evaluation"],
+    highlights: ["1.94M records", "Feature engineering", "AUC 0.89"],
     links: { github: "#", live: "#" }
   },
   {
     id: "p3",
     title: "OCR Mobile App + Dashboard",
-    tags: ["OCR", "API", "Dashboard"],
+    tags: ["Full-Stack", "OCR", "API", "Dashboard"],
     featured: false,
-    highlights: ["Text extraction", "Admin dashboard", "Analytics-ready"],
+    highlights: ["OCR pipeline", "Dashboard UI", "API integration"],
     links: { github: "#", live: "#" }
   }
 ];
