@@ -277,7 +277,98 @@ export default function Projects() {
   const projects = useMemo(
     () => [
       {
-        id: 1,
+  id: 1,
+  name: "Personal Portfolio Website",
+  type: "full-stack",
+  year: "2025",
+  featured: true,
+  tools: ["React", "Tailwind CSS", "Framer Motion", "Vite"],
+  description:
+    "Modern, responsive portfolio showcasing my AI/ML projects, full-stack applications, and software engineering work with clean UI and smooth animations.",
+  features: [
+    "Recruiter-friendly layout (About, Skills, Projects, Experience, Contact)",
+    "Responsive, mobile-first design",
+    "Smooth transitions and animations using Framer Motion",
+    "Project cards with tech stack + links",
+  ],
+  techStack: ["React", "JavaScript", "Tailwind CSS", "Framer Motion", "Vite"],
+  metrics: {
+    "Goal": "Fast, clean personal branding",
+    "UI": "Responsive + animated",
+  },
+  links: {
+    github: "https://github.com/rishika-shivanna/portfolio-fullstack",
+    live: "#",
+  },
+},
+{
+  id: 2,
+  name: "Student Performance Prediction & Learning Behavior Analysis",
+  type: "ai-ml",
+  year: "2025",
+  featured: true,
+  tools: ["Python", "Scikit-learn", "XGBoost", "Apriori"],
+  description:
+    "Data mining and machine learning project analyzing student learning behaviors and predicting academic success.",
+  features: [
+    "End-to-end data preprocessing and feature engineering",
+    "Apriori association rule mining",
+    "Multiple ML models including LR, RF, SVM, and XGBoost",
+    "Behavior pattern detection such as binge learning and burnout",
+  ],
+  techStack: [
+    "Python",
+    "Pandas",
+    "NumPy",
+    "Scikit-learn",
+    "XGBoost",
+    "Matplotlib",
+  ],
+  metrics: {
+    "Models Evaluated": "5+",
+    "Evaluation": "Accuracy, Precision, Recall, F1, ROC-AUC",
+  },
+  links: {
+    github: "https://github.com/rishika-shivanna/student-performance-prediction",
+    live: "#",
+  },
+},
+{
+  id: 3,
+  name: "Sustainable Living Coach Agent",
+  type: "ai-ml",
+  year: "2025",
+  featured: true,
+  tools: ["Python", "LLMs", "Kaggle", "Multi-Agent Systems"],
+  description:
+    "AI-powered multi-agent system that analyzes shopping receipts to estimate carbon footprint and provide sustainability insights.",
+  features: [
+    "Receipt extraction with robust text parsing",
+    "Carbon footprint estimation per item and total emissions",
+    "LLM-powered recommendations with offline fallback",
+    "Sustainability scoring and progress tracking over time",
+    "Notebook-friendly structured output for Kaggle evaluation",
+  ],
+  techStack: [
+    "Python",
+    "LLM APIs (Gemini / ChatGPT)",
+    "JSON",
+    "Jupyter Notebook",
+  ],
+  metrics: {
+    "Agent Count": "4",
+    "Sustainability Score": "0–100",
+    "Modes": "LLM + Offline",
+  },
+  links: {
+    github: "https://github.com/rishika-shivanna/sustainable-living-coach-agent",
+    live: "#",
+  },
+},
+
+
+      {
+        id: 4,
         name: "Neuva Life Sciences Web Platform",
         type: "full-stack",
         year: "2025",
@@ -295,7 +386,7 @@ export default function Projects() {
         links: { github: "#", live: "#" },
       },
       {
-        id: 2,
+        id: 5,
         name: "Yelp Business Footfall Prediction",
         type: "ai-ml",
         year: "2025",
@@ -313,7 +404,7 @@ export default function Projects() {
         links: { github: "#", live: "#" },
       },
       {
-        id: 3,
+        id: 6,
         name: "Linux Chat Service",
         type: "systems",
         year: "2025",
