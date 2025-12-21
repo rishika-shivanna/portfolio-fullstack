@@ -52,11 +52,7 @@ function EducationBlock({ item, accent = "emerald" }) {
               {item.location}
             </div>
 
-            {item.gpa ? (
-              <div className="text-amber-300 font-bold text-xs md:text-sm">
-                GPA: {item.gpa}
-              </div>
-            ) : null}
+            
 
             {item.note ? (
               <div className="text-white/70 text-xs md:text-sm leading-relaxed max-w-[48ch]">
@@ -98,7 +94,7 @@ export default function Education() {
         level: "MASTERS",
         school: "SUNY Binghamton University",
         location: "Binghamton, NY, United States",
-        gpa: "—", // ✅ put actual GPA if you want
+        
         note: "Focused on systems, data, and building production-quality software.",
         logo: "/logos/binghamton.jpg",
       },
@@ -108,7 +104,7 @@ export default function Education() {
         level: "BACHELORS",
         school: "Global Academy of Technology",
         location: "Bangalore, India",
-        gpa: "—", // ✅ put actual CGPA if you want
+        
         note: "Strong fundamentals in software engineering and core CS subjects.",
         logo: "/logos/gat.jpeg",
       },
