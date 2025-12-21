@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Download, Github, Linkedin, Mail } from "lucide-react";
+import { Download, Github, Linkedin, Mail, Cpu } from "lucide-react";
 import profileImg from "../assets/profile.jpg";
 import ContactCards from "./Contact";
 import Experience from "./Experience";
@@ -105,67 +105,105 @@ export default function Home({ jump = "home" }) {
   }, [jump]);
 
   return (
-    <div className="mx-auto max-w-6xl px-6 lg:px-10 space-y-10 pb-16">
+  <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-emerald-50">
+    {/* soft colorful blobs */}
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-300/30 blur-3xl" />
+      <div className="absolute top-40 -right-28 h-80 w-80 rounded-full bg-pink-300/30 blur-3xl" />
+      <div className="absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-emerald-300/25 blur-3xl" />
+    </div>
+
+    <div className="relative mx-auto max-w-6xl px-6 lg:px-10 space-y-10 pb-16">
+
       <section id="home" className="scroll-mt-28">
-        <div className="grid gap-8 md:grid-cols-[1.1fr_0.9fr] items-center">
-          {/* left hero text */}
-          <div className="space-y-5">
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-[1.05]">
-              Hey there, <br />
-              I am{" "}
-              <span className="text-indigo-700">RISHIKA SHIVANNA.</span>
-              <br />
-              {" "}
-              <span className="text-emerald-700">Turning Ideas into Code.</span>
-            </h1>
+  <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-center">
+    {/* LEFT */}
+    <div className="space-y-6">
+      {/* Badge (like example) */}
+      <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200/60 bg-gradient-to-r from-indigo-100/80 to-purple-100/80 px-4 py-2 backdrop-blur">
+        <Cpu className="h-4 w-4 text-indigo-700" />
+        <span className="text-sm font-semibold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
+          Full-Stack Developer & ML Enthusiast
+        </span>
+      </div>
 
-            <div className="flex items-center gap-4 text-zinc-600">
-              <a
-                href={LINKS.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:opacity-70"
-              >
-                <Linkedin className="h-6 w-6 text-indigo-700" />
-              </a>
-              <a
-                href={LINKS.github}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:opacity-70"
-              >
-                <Github className="h-6 w-6 text-zinc-900" />
-              </a>
-              <a href={LINKS.email} className="hover:opacity-70">
-                <Mail className="h-6 w-6 text-emerald-700" />
-              </a>
+      {/* Heading */}
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-zinc-900">
+  Hey there, <br />
+  I am{" "}
+  <span className="bg-gradient-to-r from-indigo-700 via-purple-700 to-indigo-700 bg-clip-text text-transparent">
+    RISHIKA SHIVANNA.
+  </span>
+  <br />
+  <span className="text-zinc-800">Turning Ideas into Code.</span>
+</h1>
+
+
+      {/* Social icons (boxed like example) */}
+      <div className="flex items-center gap-4 pt-1">
+        <a
+          href={LINKS.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          className="p-3 rounded-xl bg-gradient-to-br from-indigo-50 to-white border border-indigo-200 hover:border-indigo-400 hover:shadow-lg hover:scale-105 transition-all duration-300"
+        >
+          <Linkedin className="h-5 w-5 text-indigo-700" />
+        </a>
+
+        <a
+          href={LINKS.github}
+          target="_blank"
+          rel="noreferrer"
+          className="p-3 rounded-xl bg-gradient-to-br from-zinc-50 to-white border border-zinc-200 hover:border-zinc-400 hover:shadow-lg hover:scale-105 transition-all duration-300"
+        >
+          <Github className="h-5 w-5 text-zinc-900" />
+        </a>
+
+        <a
+          href={LINKS.email}
+          className="p-3 rounded-xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 hover:border-emerald-400 hover:shadow-lg hover:scale-105 transition-all duration-300"
+        >
+          <Mail className="h-5 w-5 text-emerald-700" />
+        </a>
+      </div>
+
+      {/* Buttons (glow style like example) */}
+      <div className="flex flex-wrap gap-3 pt-1">
+        <a
+          href="#contact"
+          className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] overflow-hidden"
+        >
+          <span className="relative z-10">CONTACT ME</span>
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </a>
+
+        <a
+          href={LINKS.resume}
+          target="_blank"
+          rel="noreferrer"
+          className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-zinc-300 hover:border-indigo-300 text-zinc-900 px-6 py-3 text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02]"
+        >
+          <Download className="h-4 w-4 group-hover:animate-bounce" />
+          <span>GET RESUME</span>
+        </a>
+      </div>
+
+      {/* Status box (like example) */}
+      <div className="pt-2">
+        <div className="rounded-xl bg-gradient-to-r from-white to-indigo-50/60 border border-indigo-100 p-4 shadow-md backdrop-blur-sm">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="h-3 w-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-500" />
+              <div className="absolute inset-0 h-3 w-3 rounded-full bg-emerald-500 animate-ping" />
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white
-                           bg-gradient-to-r from-indigo-600 to-blue-600 shadow-sm hover:opacity-95 transition"
-              >
-                CONTACT ME
-              </a>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-zinc-900">
+                Currently Coding
+              </p>
 
-              <a
-  href={LINKS.resume}
-  target="_blank"
-  rel="noreferrer"
-  className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white
-             bg-gradient-to-r from-emerald-600 to-teal-600 shadow-sm hover:opacity-95 transition"
->
-  GET RESUME <Download className="h-4 w-4" />
-</a>
-
-            </div>
-
-            <div className="rounded-2xl border border-zinc-200 bg-white/70 px-5 py-4 shadow-sm">
-              <p className="text-sm text-zinc-700">
-                <span className="text-zinc-400">status:</span>{" "}
-                <span className="font-semibold text-zinc-900">{text}</span>
+              <p className="text-sm text-zinc-600 mt-0.5 font-mono">
+                {text}
                 <span
                   className={cn(
                     "ml-1 inline-block w-2",
@@ -177,110 +215,139 @@ export default function Home({ jump = "home" }) {
               </p>
             </div>
           </div>
-
-          {/* right code window */}
-          <div className="rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-900 text-white shadow-sm">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-              <span className="h-3 w-3 rounded-full bg-red-400" />
-              <span className="h-3 w-3 rounded-full bg-yellow-400" />
-              <span className="h-3 w-3 rounded-full bg-green-400" />
-              <div className="ml-auto text-xs text-white/60 font-mono">
-                coder.ts
-              </div>
-            </div>
-
-            <div className="p-5 md:p-6 space-y-2 text-[14px] leading-relaxed font-mono">
-              <div className="text-pink-400">
-                const <span className="text-white">coder</span> = {"{"}
-              </div>
-
-              <div className="pl-5 text-white/90">
-                name: <span className="text-yellow-300">'Rishika Shivanna'</span>,
-              </div>
-              <div className="pl-5 text-white/90">
-                skills:{" "}
-                <span className="text-yellow-300">
-                  ['React','Python','SQL','Node','ML','AWS']
-                </span>
-                ,
-              </div>
-              <div className="pl-5 text-white/90">
-                hardWorker: <span className="text-emerald-300">true</span>,
-              </div>
-              <div className="pl-5 text-white/90">
-                quickLearner: <span className="text-emerald-300">true</span>,
-              </div>
-              <div className="pl-5 text-white/90">
-                problemSolver: <span className="text-emerald-300">true</span>,
-              </div>
-
-              <div className="pl-5 text-white/90">
-                hireable: <span className="text-indigo-300">function</span>() {"{"}
-              </div>
-
-              <div className="pl-10 text-white/90">return (</div>
-              <div className="pl-14 text-cyan-300">this.hardWorker &&</div>
-              <div className="pl-14 text-cyan-300">this.problemSolver &&</div>
-              <div className="pl-14 text-cyan-300">
-                this.skills.length &gt;= 5
-              </div>
-              <div className="pl-10 text-white/90">);</div>
-              <div className="pl-5 text-white/90">{"}"},</div>
-
-              <div className="text-white/70">{"};"}</div>
-            </div>
-          </div>
         </div>
-      </section>
+      </div>
+    </div>
+
+    {/* RIGHT (keep your code window, just add premium wrapper) */}
+    <div className="relative">
+      <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-indigo-400/15 blur-2xl" />
+      <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-purple-400/15 blur-2xl" />
+
+      <div className="rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 text-white shadow-2xl">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-zinc-900/80">
+          <span className="h-3 w-3 rounded-full bg-red-400" />
+          <span className="h-3 w-3 rounded-full bg-yellow-400" />
+          <span className="h-3 w-3 rounded-full bg-green-400" />
+          <div className="ml-auto text-xs text-white/60 font-mono">coder.ts</div>
+        </div>
+
+        {/* keep your code exactly */}
+        <div className="p-5 md:p-6 space-y-2 text-[14px] leading-relaxed font-mono">
+          <div className="text-pink-400">
+            const <span className="text-white">coder</span> = {"{"}
+          </div>
+
+          <div className="pl-5 text-white/90">
+            name: <span className="text-yellow-300">'Rishika Shivanna'</span>,
+          </div>
+          <div className="pl-5 text-white/90">
+            skills:{" "}
+            <span className="text-yellow-300">
+              ['React','Python','SQL','Node','ML','AWS']
+            </span>
+            ,
+          </div>
+          <div className="pl-5 text-white/90">
+            hardWorker: <span className="text-emerald-300">true</span>,
+          </div>
+          <div className="pl-5 text-white/90">
+            quickLearner: <span className="text-emerald-300">true</span>,
+          </div>
+          <div className="pl-5 text-white/90">
+            problemSolver: <span className="text-emerald-300">true</span>,
+          </div>
+
+          <div className="pl-5 text-white/90">
+            hireable: <span className="text-indigo-300">function</span>() {"{"}
+          </div>
+
+          <div className="pl-10 text-white/90">return (</div>
+          <div className="pl-14 text-cyan-300">this.hardWorker &&</div>
+          <div className="pl-14 text-cyan-300">this.problemSolver &&</div>
+          <div className="pl-14 text-cyan-300">
+            this.skills.length &gt;= 5
+          </div>
+          <div className="pl-10 text-white/90">);</div>
+          <div className="pl-5 text-white/90">{"}"},</div>
+
+          <div className="text-white/70">{"};"}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* ABOUT  */}
       <section id="about" className="scroll-mt-28">
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-start">
-          <div className="space-y-5">
-            <div className="text-emerald-700 font-extrabold tracking-wide">
-              WHO AM I?
-            </div>
+  <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-start">
+    {/* LEFT (new heading style like example) */}
+    <div className="space-y-6">
+      <div className="inline-flex items-center gap-2">
+        <div className="h-5 w-5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 animate-pulse" />
+        <h2 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
+          WHO AM I?
+        </h2>
+      </div>
 
-            <div className="text-lg md:text-xl leading-relaxed text-zinc-800">
-              <p>
-                Hey, I’m{" "}
-                <span className="font-extrabold text-indigo-700">
-                  Rishika Shivanna
-                </span>{" "}
-                — a developer who gets obsessed with clean UI, strong architecture,
-                and measurable impact.
-              </p>
-              <p className="mt-4">
-                I’ve built projects across{" "}
-                <span className="font-semibold">Full-Stack</span>,{" "}
-                <span className="font-semibold">ML</span>, and{" "}
-                <span className="font-semibold">systems</span> — focusing on
-                performance, reliability, and “recruiter-friendly” results.
-              </p>
-              <p className="mt-4">
-                I’m currently looking for opportunities where I can ship meaningful
-                software and grow with a strong team.
-              </p>
-            </div>
-          </div>
+      <div className="space-y-4 text-lg md:text-xl leading-relaxed text-zinc-800">
+        <p>
+          Hey, I’m{" "}
+          <span className="font-extrabold text-indigo-700">
+            Rishika Shivanna
+          </span>{" "}
+          — a developer who gets obsessed with clean UI, strong architecture,
+          and measurable impact.
+        </p>
 
-          <div className="relative">
-            <div className="rounded-3xl overflow-hidden border border-zinc-200 bg-white shadow-sm">
-              <img
-                src={profileImg}
-                alt="Rishika Shivanna"
-                className="w-full h-[420px] object-cover"
-              />
-            </div>
+        <p>
+    I’ve worked across{" "}
+    <span className="font-semibold text-indigo-700">Full-Stack development</span>,{" "}
+    <span className="font-semibold text-purple-700">AI / ML</span>, and{" "}
+    <span className="font-semibold text-pink-700">systems programming</span>, with
+    hands-on experience in React, Node.js, Python, SQL, cloud platforms (AWS/GCP),
+    and data-driven ML pipelines.
+  </p>
 
-            <div className="absolute -right-3 top-16 rotate-90 origin-right">
-              <div className="rounded-xl bg-zinc-900 text-white text-xs font-semibold px-4 py-2 shadow-sm">
-                ABOUT ME
-              </div>
-            </div>
-          </div>
+  <p>
+    My work ranges from optimizing healthcare platforms with{" "}
+    <span className="font-semibold">RBAC</span> and database tuning, to building
+    OCR-enabled mobile applications, predictive ML models, and
+    performance-optimized web systems.
+  </p>
+
+  <p>
+    I’m actively seeking{" "}
+    <span className="font-semibold">Software Engineering / Full-Stack roles</span>{" "}
+    where I can contribute strong engineering fundamentals, clean architecture,
+    and measurable results while growing within high-impact, collaborative teams.
+  </p>
+</div>
+    </div>
+
+    {/* RIGHT (image card like example) */}
+    <div className="relative">
+      {/* floating badge */}
+      <div className="absolute -top-3 -right-3 z-10">
+        <div className="rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-extrabold px-3 py-1.5 shadow-lg">
+          RISHIKA
         </div>
-      </section>
+      </div>
+
+      <div className="relative rounded-2xl overflow-hidden border-2 border-white shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
+        <img
+          src={profileImg}
+          alt="Rishika Shivanna"
+          className="w-full h-[420px] object-cover"
+        />
+        {/* soft overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 via-transparent to-transparent" />
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* EXPERIENCE */}
             {/* EXPERIENCE */}
@@ -321,7 +388,7 @@ export default function Home({ jump = "home" }) {
         />
       </Section>
 <Footer />
-
+ </div>
     </div>
   );
 }

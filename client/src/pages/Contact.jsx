@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Mail, Linkedin, Github, Download, Copy, Check, FileText } from "lucide-react";
+import {
+  Mail,
+  Linkedin,
+  Github,
+  Download,
+  Copy,
+  Check,
+  FileText,
+} from "lucide-react";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -29,11 +37,50 @@ function ContactCard({
   children,
 }) {
   const toneMap = {
-    indigo: { bar: "from-indigo-600 to-blue-600", bg: "from-indigo-50 to-blue-50", btn: "bg-indigo-600 hover:bg-indigo-700", ring: "ring-indigo-200", icon: "text-indigo-600" },
-    emerald:{ bar: "from-emerald-600 to-teal-600", bg: "from-emerald-50 to-teal-50", btn: "bg-emerald-600 hover:bg-emerald-700", ring: "ring-emerald-200", icon: "text-emerald-600" },
-    rose:   { bar: "from-rose-600 to-pink-600", bg: "from-rose-50 to-pink-50", btn: "bg-rose-600 hover:bg-rose-700", ring: "ring-rose-200", icon: "text-rose-600" },
-    violet: { bar: "from-violet-600 to-fuchsia-600", bg: "from-violet-50 to-fuchsia-50", btn: "bg-violet-600 hover:bg-violet-700", ring: "ring-violet-200", icon: "text-violet-600" },
-  };
+  indigo: {
+    cardBg: "bg-white/70",
+    barSolid: "bg-indigo-600",
+    bg: "from-indigo-50 to-blue-50",
+    btn: "bg-indigo-600 hover:bg-indigo-700",
+    ring: "ring-indigo-200",
+    icon: "text-indigo-600",
+    text: "text-zinc-900",
+  },
+  emerald: {
+    cardBg: "bg-white/70",
+    barSolid: "bg-emerald-600",
+    bg: "from-emerald-50 to-teal-50",
+    btn: "bg-emerald-600 hover:bg-emerald-700",
+    ring: "ring-emerald-200",
+    icon: "text-emerald-600",
+    text: "text-zinc-900",
+  },
+  // 🔴 FULL RED GITHUB CARD
+  rose: {
+    cardBg: "bg-rose-50",
+    barSolid: "bg-rose-400",
+    bg: "from-red-200 to-red-200",
+    btn: "bg-rose-500 hover:bg-rose-600 text-white",
+    ring: "ring-red-300",
+    icon: "text-rose-500",
+    text: "text-black",
+  },
+  violet: {
+    cardBg: "bg-white/70",
+    barSolid: "bg-violet-600",
+    bg: "from-violet-50 to-fuchsia-50",
+    btn: "bg-violet-600 hover:bg-violet-700",
+    ring: "ring-violet-200",
+    icon: "text-violet-600",
+    text: "text-zinc-900",
+  },
+};
+
+
+
+  
+  
+
 
   const t = toneMap[tone] || toneMap.indigo;
   const [copied, setCopied] = useState(false);
@@ -47,17 +94,37 @@ function ContactCard({
   }
 
   return (
-    <div className="rounded-3xl border border-zinc-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden">
-      <div className={cn("h-1.5 w-full bg-gradient-to-r", t.bar)} />
-      <div className={cn("p-6", "bg-gradient-to-r", t.bg)}>
+<div
+  className={cn(
+    "rounded-3xl border border-zinc-200 shadow-sm overflow-hidden",
+    t.cardBg
+  )}
+>
+      {/* 🔴 SOLID TOP BAR */}
+      <div className={cn("h-1.5 w-full", t.barSolid)} />
+<div
+  className={cn(
+    "p-6",
+    tone === "rose" ? "bg-transparent" : "bg-gradient-to-r",
+    t.bg
+  )}
+>
+
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-4 min-w-0">
-            <div className={cn("h-12 w-12 rounded-2xl bg-white grid place-items-center ring-1", t.ring)}>
+            <div
+              className={cn(
+                "h-12 w-12 rounded-2xl bg-white grid place-items-center ring-1",
+                t.ring
+              )}
+            >
               <span className={cn("h-5 w-5", t.icon)}>{icon}</span>
             </div>
 
             <div className="min-w-0">
-              <div className="text-lg font-extrabold text-zinc-900">{title}</div>
+              <div className="text-lg font-extrabold text-zinc-900">
+                {title}
+              </div>
               <div className="mt-1 text-zinc-700 truncate">{value}</div>
 
               <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -66,18 +133,24 @@ function ContactCard({
                   onClick={onCopy}
                   className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
                 >
-                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  {copied ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
                   {copied ? "Copied" : "Copy"}
                 </button>
 
-                {hint ? <span className="text-sm text-zinc-500">{hint}</span> : null}
+                {hint && (
+                  <span className="text-sm text-zinc-500">{hint}</span>
+                )}
               </div>
 
-              {children ? <div className="mt-4">{children}</div> : null}
+              {children && <div className="mt-4">{children}</div>}
             </div>
           </div>
 
-          {href ? (
+          {href && (
             <a
               href={href}
               target="_blank"
@@ -89,7 +162,7 @@ function ContactCard({
             >
               {actionLabel}
             </a>
-          ) : null}
+          )}
         </div>
       </div>
     </div>
@@ -100,13 +173,9 @@ export default function ContactCards({
   email = "rshivanna@binghamton.edu",
   linkedin = "https://www.linkedin.com/in/rishika-shivanna/",
   github = "https://github.com/rishika-shivanna",
-  resumeUrl = "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing", // ✅ your link
+  resumeUrl = "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view",
 }) {
-  const safeLinkedin = typeof linkedin === "string" ? linkedin : "";
-  const safeGithub = typeof github === "string" ? github : "";
-
   const fileId = extractDriveFileId(resumeUrl);
-  const hasResume = Boolean(fileId);
 
   return (
     <div className="grid lg:grid-cols-2 gap-6">
@@ -114,10 +183,10 @@ export default function ContactCards({
         tone="indigo"
         icon={<Mail />}
         title="Email"
-        value={email || "—"}
+        value={email}
         hint="Best way to reach me"
         actionLabel="Send"
-        href={email ? `mailto:${email}` : ""}
+        href={`mailto:${email}`}
         copyValue={email}
       />
 
@@ -125,55 +194,54 @@ export default function ContactCards({
         tone="emerald"
         icon={<Linkedin />}
         title="LinkedIn"
-        value={safeLinkedin ? safeLinkedin.replace(/^https?:\/\//, "") : "—"}
+        value={linkedin.replace(/^https?:\/\//, "")}
         hint="Connect & message"
         actionLabel="Open"
-        href={safeLinkedin || ""}
-        copyValue={safeLinkedin}
+        href={linkedin}
+        copyValue={linkedin}
       />
 
+      {/* 🔴 FULL RED GITHUB CARD */}
       <ContactCard
         tone="rose"
         icon={<Github />}
         title="GitHub"
-        value={safeGithub ? safeGithub.replace(/^https?:\/\//, "") : "—"}
+        value={github.replace(/^https?:\/\//, "")}
         hint="Projects & code"
         actionLabel="Open"
-        href={safeGithub || ""}
-        copyValue={safeGithub}
+        href={github}
+        copyValue={github}
       />
 
       <ContactCard
         tone="violet"
         icon={<FileText />}
         title="Resume"
-        value={hasResume ? "Download PDF" : "Not available"}
-        hint={hasResume ? "Google Drive" : "Add Drive link"}
-        actionLabel={hasResume ? "Open" : ""}
-        href={hasResume ? driveViewUrl(fileId) : ""}
-        copyValue={hasResume ? driveViewUrl(fileId) : ""}
+        value="Download PDF"
+        hint="Google Drive"
+        actionLabel="Open"
+        href={driveViewUrl(fileId)}
+        copyValue={driveViewUrl(fileId)}
       >
-        {hasResume ? (
-          <div className="flex flex-wrap gap-3">
-            <a
-              href={driveViewUrl(fileId)}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
-            >
-              <FileText className="h-4 w-4" />
-              Open in Drive
-            </a>
+        <div className="flex flex-wrap gap-3">
+          <a
+            href={driveViewUrl(fileId)}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+          >
+            <FileText className="h-4 w-4" />
+            Open in Drive
+          </a>
 
-            <a
-              href={driveDownloadUrl(fileId)}
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
-            >
-              <Download className="h-4 w-4" />
-              Download PDF
-            </a>
-          </div>
-        ) : null}
+          <a
+            href={driveDownloadUrl(fileId)}
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+          >
+            <Download className="h-4 w-4" />
+            Download PDF
+          </a>
+        </div>
       </ContactCard>
     </div>
   );
