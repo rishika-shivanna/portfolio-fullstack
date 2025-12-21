@@ -1,232 +1,327 @@
+import { useEffect, useMemo, useState } from "react";
+import { Download, Github, Linkedin, Mail } from "lucide-react";
 import profileImg from "../assets/profile.jpg";
-import { Link } from "react-router-dom";
+import ContactCards from "./Contact";
+import Experience from "./Experience";
+import Projects from "./Projects";
+import Education from "./Education";
+import SkillsMarquee from "./SkillsMarquee";
+import Footer from "../components/Footer"; 
 
-export default function Home() {
+import { Link } from "react-router-dom";
+<a href="#contact" className="...">CONTACT ME</a>
+
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+function useTypewriter(lines, speed = 22, pause = 1200) {
+  const [text, setText] = useState("");
+  const [idx, setIdx] = useState(0);
+  const [cursor, setCursor] = useState(true);
+
+  useEffect(() => {
+    const cursorTimer = setInterval(() => setCursor((c) => !c), 450);
+    return () => clearInterval(cursorTimer);
+  }, []);
+
+  useEffect(() => {
+    let i = 0;
+    const line = lines[idx];
+
+    const t = setInterval(() => {
+      if (i <= line.length) {
+        setText(line.slice(0, i));
+        i++;
+      } else {
+        clearInterval(t);
+        const hold = setTimeout(() => {
+          setText("");
+          setIdx((p) => (p + 1) % lines.length);
+        }, pause);
+        return () => clearTimeout(hold);
+      }
+    }, speed);
+
+    return () => clearInterval(t);
+  }, [idx, lines, speed, pause]);
+
+  return { text, cursor };
+}
+
+function Section({ id, title, subtitle, children }) {
+  return (
+    <section id={id} className="scroll-mt-28">
+      <div className="rounded-3xl border border-zinc-200 bg-white/70 backdrop-blur p-6 md:p-8 shadow-sm">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs text-zinc-400">/{id}</p>
+            <h2 className="mt-1 text-2xl md:text-3xl font-extrabold text-zinc-900">
+              {title}
+            </h2>
+            {subtitle ? (
+              <p className="mt-2 text-sm text-zinc-600">{subtitle}</p>
+            ) : null}
+          </div>
+
+          <a
+            href="#home"
+            className="hidden sm:inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-50 transition"
+          >
+            Top ↗
+          </a>
+        </div>
+
+        <div className="mt-6">{children}</div>
+      </div>
+    </section>
+  );
+}
+
+export default function Home({ jump = "home" }) {
   const LINKS = {
     email: "mailto:rshivanna@binghamton.edu",
     linkedin: "https://www.linkedin.com/in/rishika-shivanna/",
     github: "https://github.com/rishika-shivanna",
+    resume: "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing",
   };
 
-  // ✅ icons from /public/icons (NO IMPORTS)
-  const ICONS = {
-    email: "/icons/email.png",
-    linkedin: "/icons/linkedin.png",
-    github: "/icons/github.png",
-  };
+  const statusLines = useMemo(
+    () => [
+      "Full-Stack + ML • shipping clean systems",
+      "Open to SWE / Full-Stack roles",
+      "Performance • Security • UI polish",
+      "Let’s build something great",
+    ],
+    []
+  );
 
-  const IconBtn = ({ href, icon, label }) => (
-  <a
-    href={href}
-    target={href.startsWith("http") ? "_blank" : undefined}
-    rel={href.startsWith("http") ? "noreferrer" : undefined}
-    className="group inline-flex items-center justify-center"
-    title={label}
-    aria-label={label}
-  >
-    <img
-      src={icon}
-      alt={label}
-      className="h-10 w-10 object-contain opacity-95
-                 transition duration-200 ease-out
-                 group-hover:opacity-100 group-hover:scale-110
-                 group-active:scale-95"
-    />
-  </a>
-);
+  const { text, cursor } = useTypewriter(statusLines, 20, 1100);
 
+  useEffect(() => {
+    const el = document.getElementById(jump);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [jump]);
 
   return (
-    <div className="space-y-6">
-      {/* Top intro */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 p-6 relative overflow-hidden">
-        {/* subtle haze */}
-        <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+    <div className="mx-auto max-w-6xl px-6 lg:px-10 space-y-10 pb-16">
+      <section id="home" className="scroll-mt-28">
+        <div className="grid gap-8 md:grid-cols-[1.1fr_0.9fr] items-center">
+          {/* left hero text */}
+          <div className="space-y-5">
+            <h1 className="text-4xl md:text-6xl font-extrabold leading-[1.05]">
+              Hey there, <br />
+              I am{" "}
+              <span className="text-indigo-700">RISHIKA SHIVANNA.</span>
+              <br />
+              {" "}
+              <span className="text-emerald-700">Turning Ideas into Code.</span>
+            </h1>
 
-        <p className="font-mono text-sm text-zinc-400">{"// home.tsx"}</p>
+            <div className="flex items-center gap-4 text-zinc-600">
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:opacity-70"
+              >
+                <Linkedin className="h-6 w-6 text-indigo-700" />
+              </a>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:opacity-70"
+              >
+                <Github className="h-6 w-6 text-zinc-900" />
+              </a>
+              <a href={LINKS.email} className="hover:opacity-70">
+                <Mail className="h-6 w-6 text-emerald-700" />
+              </a>
+            </div>
 
-        {/* ✅ Name row + icons (ONLY ADDITION HERE) */}
-        <div className="mt-2 flex items-center justify-between gap-4">
-          <h1 className="text-4xl font-semibold">Rishika Shivanna</h1>
-        
-        </div>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white
+                           bg-gradient-to-r from-indigo-600 to-blue-600 shadow-sm hover:opacity-95 transition"
+              >
+                CONTACT ME
+              </a>
 
-        <p className="mt-2 text-zinc-200">
-          MS CS (AI Track) @ Binghamton University. I build clean full-stack apps, data-driven ML
-          features, and performance-focused systems.{" "}
-          <span className="text-zinc-400">(React • Node • ML • Dashboards)</span>
-        </p>
-
-        <div className="mt-4 flex flex-wrap gap-5">
-          {["React", "Tailwind", "Node.js", "Python", "ML/AI", "Docker", "CI/CD"].map((t) => (
-            <span
-              key={t}
-              className="text-xs px-3 py-1 rounded-full border border-zinc-800 bg-black/20 text-zinc-100
-                         hover:bg-white/5 transition"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-4 text-sm text-amber-400">
-          Based in Binghamton, NY • Open to SWE / Full-Stack / AI-track roles
-        </div>
-
-        <div className="mt-3 flex items-center gap-5">
-            <IconBtn href={LINKS.email} icon={ICONS.email} label="Email" />
-            <IconBtn href={LINKS.linkedin} icon={ICONS.linkedin} label="LinkedIn" />
-            <IconBtn href={LINKS.github} icon={ICONS.github} label="GitHub" />
-          </div>
-          
-      </div>
-
-      
-{/* WHO AM I */}
-
-<div
-  id="who-am-i"
-  className="rounded-2xl border border-zinc-800 bg-zinc-950/40 overflow-hidden"
+              <a
+  href={LINKS.resume}
+  target="_blank"
+  rel="noreferrer"
+  className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white
+             bg-gradient-to-r from-emerald-600 to-teal-600 shadow-sm hover:opacity-95 transition"
 >
-        <div className="grid md:grid-cols-2">
-          {/* Left: About text */}
-          <div className="p-8 min-h-[520px] max-h-[520px] overflow-y-auto">
-            <div className="inline-flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-emerald-400/90" />
-              <h2 className="text-xl font-semibold tracking-wide text-emerald-300">
-                WHO AM I?
-              </h2>
-            </div>
-            {/* Scroll down hint */}
-<div className="mt-6 flex justify-center">
-  <button
-    onClick={() => {
-      document
-        .getElementById("who-am-i")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }}
-    className="group inline-flex items-center gap-2 rounded-full
-               border border-zinc-700 bg-black/30 px-5 py-2
-               text-sm text-zinc-300 hover:text-white
-               hover:bg-white/5 transition"
-  >
-    <span className="opacity-80 group-hover:opacity-100">
-      Scroll 
-    </span>
-    <span className="animate-bounce">↓</span>
-  </button>
-</div>
+  GET RESUME <Download className="h-4 w-4" />
+</a>
 
-
-            <p className="mt-5 text-zinc-100 leading-relaxed">
-              Hey — I’m <span className="font-semibold">Rishika Shivanna</span>. I enjoy turning
-              messy problems into simple, reliable systems: clean UI, solid APIs, and measurable
-              impact.
-            </p>
-
-            <p className="mt-4 text-zinc-200 leading-relaxed">
-              I’ve worked on platform security and performance improvements in real products —
-              implementing RBAC-style access control and optimizing slow backend flows to improve
-              stability and user experience.
-            </p>
-
-            <p className="mt-4 text-zinc-200 leading-relaxed">
-              I’ve also built an OCR-enabled workflow to reduce manual report time, and created
-              dashboards that make data easier to understand and act on.
-            </p>
-
-            <p className="mt-4 text-zinc-200 leading-relaxed">
-              Outside work, I build across systems + ML — like a Linux chat service and a Yelp
-              prediction project using large-scale data with strong model performance.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                to="/projects"
-                className="rounded-xl border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-200
-                           hover:bg-emerald-400/15 transition"
-              >
-                View Projects
-              </Link>
-
-              <Link
-                to="/resume"
-                className="rounded-xl border border-zinc-700 bg-black/20 px-4 py-2 text-sm text-zinc-200
-                           hover:bg-white/5 transition"
-              >
-                Resume
-              </Link>
-
-              <Link
-                to="/contact"
-                className="rounded-xl border border-zinc-700 bg-black/20 px-4 py-2 text-sm text-zinc-200
-                           hover:bg-white/5 transition"
-              >
-                Contact
-              </Link>
             </div>
 
-            <div className="mt-6">
-              <p className="font-mono text-xs text-zinc-400 mb-2">{"// quick-facts.json"}</p>
-              <pre className="rounded-xl border border-zinc-800 bg-black/20 p-4 text-[12px] text-zinc-200 overflow-x-auto">
-{`{
-  "focus": ["Full-Stack", "AI/ML", "Systems"],
-  "current": "MS CS (AI Track) @ Binghamton",
-  "strengths": ["Performance", "Dashboards", "Clean UI", "APIs"],
-  "open_to": ["SWE Intern", "Full-Stack", "AI/ML Roles"]
-}`}
-              </pre>
+            <div className="rounded-2xl border border-zinc-200 bg-white/70 px-5 py-4 shadow-sm">
+              <p className="text-sm text-zinc-700">
+                <span className="text-zinc-400">status:</span>{" "}
+                <span className="font-semibold text-zinc-900">{text}</span>
+                <span
+                  className={cn(
+                    "ml-1 inline-block w-2",
+                    cursor ? "opacity-100" : "opacity-0"
+                  )}
+                >
+                  |
+                </span>
+              </p>
             </div>
           </div>
 
-          {/* Right: Photo block */}
-          <div className="relative p-6 md:p-8 border-t md:border-t-0 md:border-l border-zinc-800">
-            {/* glow */}
-            <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-emerald-400/10 blur-3xl" />
-            <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
-
-            {/* Image card with pop on hover */}
-            <div
-              className="group relative rounded-2xl overflow-hidden border border-zinc-800 bg-black/20
-                         transition duration-300 ease-out
-                         hover:-translate-y-2 hover:scale-[1.03]
-                         hover:shadow-2xl hover:shadow-emerald-500/15"
-            >
-              <img
-                src={profileImg}
-                alt="Rishika Shivanna"
-                className="w-full h-[420px] object-cover transition duration-300 ease-out
-                           group-hover:scale-[1.05]"
-              />
-
-              <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                <p className="text-sm text-zinc-100 font-medium">Rishika Shivanna</p>
-                <p className="text-xs text-zinc-300">Full-Stack • AI Track • Builder</p>
+          {/* right code window */}
+          <div className="rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-900 text-white shadow-sm">
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+              <span className="h-3 w-3 rounded-full bg-red-400" />
+              <span className="h-3 w-3 rounded-full bg-yellow-400" />
+              <span className="h-3 w-3 rounded-full bg-green-400" />
+              <div className="ml-auto text-xs text-white/60 font-mono">
+                coder.ts
               </div>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["Clean UI", "Systems thinking", "Ship fast", "Measure impact"].map((t) => (
-                <span
-                  key={t}
-                  className="text-[11px] font-mono px-2 py-1 rounded border border-zinc-800 bg-black/20 text-zinc-200
-                             hover:bg-white/5 transition"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+            <div className="p-5 md:p-6 space-y-2 text-[14px] leading-relaxed font-mono">
+              <div className="text-pink-400">
+                const <span className="text-white">coder</span> = {"{"}
+              </div>
 
-            {/*  Replace text links with icons (ONLY CHANGE HERE) */}
-            <div className="mt-4 flex items-center gap-3">
-              <IconBtn href={LINKS.email} icon={ICONS.email} label="Email" />
-              <IconBtn href={LINKS.linkedin} icon={ICONS.linkedin} label="LinkedIn" />
-              <IconBtn href={LINKS.github} icon={ICONS.github} label="GitHub" />
+              <div className="pl-5 text-white/90">
+                name: <span className="text-yellow-300">'Rishika Shivanna'</span>,
+              </div>
+              <div className="pl-5 text-white/90">
+                skills:{" "}
+                <span className="text-yellow-300">
+                  ['React','Python','SQL','Node','ML','AWS']
+                </span>
+                ,
+              </div>
+              <div className="pl-5 text-white/90">
+                hardWorker: <span className="text-emerald-300">true</span>,
+              </div>
+              <div className="pl-5 text-white/90">
+                quickLearner: <span className="text-emerald-300">true</span>,
+              </div>
+              <div className="pl-5 text-white/90">
+                problemSolver: <span className="text-emerald-300">true</span>,
+              </div>
+
+              <div className="pl-5 text-white/90">
+                hireable: <span className="text-indigo-300">function</span>() {"{"}
+              </div>
+
+              <div className="pl-10 text-white/90">return (</div>
+              <div className="pl-14 text-cyan-300">this.hardWorker &&</div>
+              <div className="pl-14 text-cyan-300">this.problemSolver &&</div>
+              <div className="pl-14 text-cyan-300">
+                this.skills.length &gt;= 5
+              </div>
+              <div className="pl-10 text-white/90">);</div>
+              <div className="pl-5 text-white/90">{"}"},</div>
+
+              <div className="text-white/70">{"};"}</div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* ABOUT  */}
+      <section id="about" className="scroll-mt-28">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-start">
+          <div className="space-y-5">
+            <div className="text-emerald-700 font-extrabold tracking-wide">
+              WHO AM I?
+            </div>
+
+            <div className="text-lg md:text-xl leading-relaxed text-zinc-800">
+              <p>
+                Hey, I’m{" "}
+                <span className="font-extrabold text-indigo-700">
+                  Rishika Shivanna
+                </span>{" "}
+                — a developer who gets obsessed with clean UI, strong architecture,
+                and measurable impact.
+              </p>
+              <p className="mt-4">
+                I’ve built projects across{" "}
+                <span className="font-semibold">Full-Stack</span>,{" "}
+                <span className="font-semibold">ML</span>, and{" "}
+                <span className="font-semibold">systems</span> — focusing on
+                performance, reliability, and “recruiter-friendly” results.
+              </p>
+              <p className="mt-4">
+                I’m currently looking for opportunities where I can ship meaningful
+                software and grow with a strong team.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="rounded-3xl overflow-hidden border border-zinc-200 bg-white shadow-sm">
+              <img
+                src={profileImg}
+                alt="Rishika Shivanna"
+                className="w-full h-[420px] object-cover"
+              />
+            </div>
+
+            <div className="absolute -right-3 top-16 rotate-90 origin-right">
+              <div className="rounded-xl bg-zinc-900 text-white text-xs font-semibold px-4 py-2 shadow-sm">
+                ABOUT ME
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EXPERIENCE */}
+            {/* EXPERIENCE */}
+      <Section
+        id="experience"
+        title="Experience"
+        subtitle="Impact-first bullets with metrics."
+      >
+        <Experience />
+      </Section>
+
+      {/* ✅ SKILLS after experience */}
+      <Section id="skills" title="Skills" subtitle="Tools I use to build & ship.">
+        <SkillsMarquee />
+      </Section>
+
+      {/* ✅ PROJECTS after skills */}
+      <Section
+        id="projects"
+        title="Projects"
+        subtitle="Things I built with impact + stack + results."
+      >
+        <Projects />
+      </Section>
+
+      {/* EDUCATION */}
+      <Section id="education" title="Education" subtitle="Degrees + highlights.">
+        <Education />
+      </Section>
+
+      {/* CONTACT */}
+      <Section id="contact" title="Contact" subtitle="Short, clean, and professional.">
+        <ContactCards
+          email="rshivanna@binghamton.edu"
+          linkedin="https://www.linkedin.com/in/rishika-shivanna/"
+          github="https://github.com/rishika-shivanna"
+          resumeUrl={LINKS.resume}
+        />
+      </Section>
+<Footer />
+
     </div>
   );
 }

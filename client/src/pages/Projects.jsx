@@ -1,355 +1,415 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { projects } from "../data/projects";
+import { useMemo, useState } from "react";
+import {
+  ExternalLink,
+  Github,
+  Sparkles,
+  Search,
+  Code2,
+  Cpu,
+  Brain,
+  ChevronDown,
+} from "lucide-react";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-/** Lock/unlock body scroll when modal opens */
-function useLockBodyScroll(locked) {
-  useEffect(() => {
-    if (!locked) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [locked]);
+function Tag({ children }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semibold text-zinc-700">
+      {children}
+    </span>
+  );
 }
 
-/** Minimal focus trap (keeps tab inside modal) */
-function useEscapeToClose(open, onClose) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => {
-      if (e.key === "Escape") onClose?.();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+function TypeChip({ active, label, onClick }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "rounded-full border px-4 py-2 text-sm font-semibold transition",
+        active
+          ? "border-zinc-900 bg-zinc-900 text-white"
+          : "border-zinc-200 bg-white/70 text-zinc-800 hover:bg-white"
+      )}
+    >
+      {label}
+    </button>
+  );
 }
 
-/** Modal */
-function ProjectModal({ project, open, onClose }) {
-  useLockBodyScroll(open);
-  useEscapeToClose(open, onClose);
+function ProjectTypeIcon({ type }) {
+  if (type === "ai-ml") return <Brain className="h-4 w-4" />;
+  if (type === "systems") return <Cpu className="h-4 w-4" />;
+  return <Code2 className="h-4 w-4" />;
+}
 
-  if (!open || !project) return null;
+function accentByType(type) {
+  if (type === "ai-ml") {
+    return {
+      ring: "ring-indigo-200",
+      bar: "from-indigo-500/60 via-indigo-400/20 to-transparent",
+      title: "text-indigo-700",
+      glow: "hover:shadow-[0_30px_80px_-55px_rgba(79,70,229,0.6)]",
+    };
+  }
+  if (type === "systems") {
+    return {
+      ring: "ring-emerald-200",
+      bar: "from-emerald-500/60 via-emerald-400/20 to-transparent",
+      title: "text-emerald-700",
+      glow: "hover:shadow-[0_30px_80px_-55px_rgba(16,185,129,0.6)]",
+    };
+  }
+  return {
+    ring: "ring-cyan-200",
+    bar: "from-cyan-500/60 via-cyan-400/20 to-transparent",
+    title: "text-cyan-700",
+    glow: "hover:shadow-[0_30px_80px_-55px_rgba(6,182,212,0.6)]",
+  };
+}
 
-  const safeGithub = project.links?.github || "#";
-  const safeLive = project.links?.live || "#";
+function CodePreview({ p }) {
+  return (
+    <div className="rounded-2xl border border-zinc-200 bg-zinc-950 text-zinc-100 overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-white/10">
+        <span className="h-3 w-3 rounded-full bg-red-400/90" />
+        <span className="h-3 w-3 rounded-full bg-amber-400/90" />
+        <span className="h-3 w-3 rounded-full bg-emerald-400/90" />
+        <span className="ml-2 text-xs font-mono text-white/60">
+          {p.name.replace(/\s+/g, "-").toLowerCase()}.js
+        </span>
+      </div>
+
+      <pre className="px-4 py-4 text-[13px] leading-relaxed font-mono whitespace-pre-wrap break-words">
+{`const project = {
+  name: "${p.name}",
+  type: "${p.type}",
+  year: "${p.year}",
+  tools: [
+${p.tools.map((x) => `    "${x}",`).join("\n")}
+  ],
+  featured: ${p.featured ? "true" : "false"},
+  metrics: ${JSON.stringify(p.metrics || {}, null, 2)}
+};`}
+      </pre>
+    </div>
+  );
+}
+
+function Spotlight({ p }) {
+  const a = accentByType(p.type);
 
   return (
-    <div
-      className="fixed inset-0 z-[999] flex items-center justify-center p-4"
-      role="dialog"
-      aria-modal="true"
-      onMouseDown={(e) => {
-        // click outside closes
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      {/* backdrop */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-
-      {/* modal card */}
-      <div className="relative w-full max-w-3xl rounded-2xl border border-zinc-800 bg-zinc-950 shadow-[0_40px_120px_rgba(0,0,0,0.75)] overflow-hidden">
-        {/* top glow */}
-        <div className="pointer-events-none absolute -top-28 -right-28 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-28 -left-28 h-64 w-64 rounded-full bg-fuchsia-400/10 blur-3xl" />
-
-        {/* header */}
-        <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-zinc-800 bg-black/20">
-          <div className="min-w-0">
-            <p className="font-mono text-xs text-zinc-500">
-              {"// project.preview.tsx"}
-            </p>
-            <h3 className="mt-1 text-xl font-semibold text-zinc-100 truncate">
-              {project.title}
-            </h3>
-            <p className="mt-2 text-sm text-zinc-300">
-              {project.description ||
-                "Preview mode — details rendered from your projects data."}
-            </p>
-          </div>
-
-          <button
-            onClick={onClose}
-            className="shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 hover:bg-white/5 hover:border-zinc-700 transition"
-            aria-label="Close modal"
-          >
-            Esc
-          </button>
-        </div>
-
-        {/* body */}
-        <div className="px-6 py-6 space-y-5">
-          {/* tags */}
-          <div className="flex flex-wrap gap-2">
-            {(project.tags || []).map((t) => (
-              <span
-                key={t}
-                className="text-xs px-2 py-1 rounded-full border border-zinc-800 bg-black/30 text-zinc-200"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-
-          {/* highlights */}
-          <div className="rounded-2xl border border-zinc-800 bg-black/30 overflow-hidden">
-            <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
-              <div className="text-sm font-medium text-zinc-100">
-                Highlights
-              </div>
-              <div className="text-xs font-mono text-zinc-500">
-                {`items: ${Math.min((project.highlights || []).length, 6)}`}
-              </div>
+    <div className={cn("rounded-3xl border border-zinc-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden", a.glow)}>
+      <div className={cn("h-[3px] w-full bg-gradient-to-r", a.bar)} />
+      <div className="p-6 md:p-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
+              <Sparkles className="h-4 w-4" />
+              FEATURED SPOTLIGHT
             </div>
 
-            <ul className="p-4 text-sm text-zinc-300/90 list-disc pl-5 space-y-2">
-              {(project.highlights || []).slice(0, 6).map((h) => (
-                <li key={h} className="marker:text-zinc-500">
-                  {h}
-                </li>
-              ))}
-            </ul>
+            <h3 className={cn("text-2xl md:text-3xl font-extrabold tracking-tight", a.title)}>
+              {p.name}
+            </h3>
+
+            <p className="text-sm md:text-base text-zinc-700 leading-relaxed max-w-2xl">
+              {p.description}
+            </p>
+
+            <div className="flex flex-wrap gap-2 pt-2">
+              <Tag>
+                <span className="inline-flex items-center gap-2">
+                  <ProjectTypeIcon type={p.type} />
+                  <span className="capitalize">{p.type}</span>
+                </span>
+              </Tag>
+              <Tag>{p.year}</Tag>
+              {p.metrics
+                ? Object.entries(p.metrics).slice(0, 3).map(([k, v]) => (
+                    <Tag key={k}>
+                      {k}: {v}
+                    </Tag>
+                  ))
+                : null}
+            </div>
+
+            <div className="flex flex-wrap gap-3 pt-3">
+              {p.links?.github && p.links.github !== "#" ? (
+                <a
+                  href={p.links.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+                >
+                  <Github className="h-4 w-4" /> Code
+                </a>
+              ) : null}
+
+              {p.links?.live && p.links.live !== "#" ? (
+                <a
+                  href={p.links.live}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition"
+                >
+                  <ExternalLink className="h-4 w-4" /> Live Demo
+                </a>
+              ) : null}
+            </div>
           </div>
 
-          {/* links */}
-          <div className="flex flex-wrap gap-3">
-            <a
-              href={safeGithub}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm border border-cyan-400/25 bg-cyan-400/10 text-cyan-200 hover:border-cyan-400/45 hover:bg-cyan-400/15 transition"
-            >
-              <span className="font-mono text-xs">{`{}`}</span>
-              GitHub
-            </a>
-            <a
-              href={safeLive}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm border border-fuchsia-400/25 bg-fuchsia-400/10 text-fuchsia-200 hover:border-fuchsia-400/45 hover:bg-fuchsia-400/15 transition"
-            >
-              <span className="font-mono text-xs">↗</span>
-              Live
-            </a>
+          {/* right mini “code vibe” */}
+          <div className="w-full md:max-w-[420px]">
+            <CodePreview p={p} />
           </div>
-        </div>
-
-        {/* footer */}
-        <div className="px-6 py-4 border-t border-zinc-800 bg-black/20 text-xs text-zinc-400 flex items-center justify-between">
-          <span className="font-mono">{`project.id = ${project.id}`}</span>
-          {project.featured ? (
-            <span className="text-[11px] font-mono px-2 py-1 rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200">
-              featured
-            </span>
-          ) : (
-            <span className="text-zinc-500">preview</span>
-          )}
         </div>
       </div>
     </div>
   );
 }
 
-/** Single carousel card with magnetic hover */
-function ProjectCard({ p, onOpen }) {
-  const ref = useRef(null);
-  const [t, setT] = useState({ x: 0, y: 0 });
-  const [spot, setSpot] = useState({ x: 50, y: 50 });
-  const [hover, setHover] = useState(false);
-
-  const onMove = (e) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-
-    const px = ((e.clientX - r.left) / r.width) * 100;
-    const py = ((e.clientY - r.top) / r.height) * 100;
-    setSpot({ x: px, y: py });
-
-    // magnetic pull (small translation)
-    const dx = e.clientX - (r.left + r.width / 2);
-    const dy = e.clientY - (r.top + r.height / 2);
-    const mx = Math.max(-16, Math.min(16, dx / 12));
-    const my = Math.max(-14, Math.min(14, dy / 12));
-    setT({ x: mx, y: my });
-  };
-
-  const onLeave = () => {
-    setHover(false);
-    setT({ x: 0, y: 0 });
-    setSpot({ x: 50, y: 50 });
-  };
+function ProjectCard({ p }) {
+  const a = accentByType(p.type);
+  const [open, setOpen] = useState(false);
 
   return (
-    <button
-      ref={ref}
-      type="button"
-      onMouseMove={onMove}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={onLeave}
-      onClick={() => onOpen(p)}
-      className={cn(
-        "relative text-left w-[320px] sm:w-[360px] md:w-[420px]",
-        "snap-center shrink-0",
-        "rounded-2xl border border-zinc-800 bg-zinc-950/55 backdrop-blur-xl",
-        "shadow-[0_20px_90px_rgba(0,0,0,0.55)]",
-        "transition-transform duration-200 will-change-transform",
-        "hover:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-cyan-400/30"
-      )}
-      style={{
-        transform: `translate3d(${t.x}px, ${t.y}px, 0)`,
-      }}
-    >
-      {/* animated border glow */}
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition duration-300",
-          hover ? "opacity-100" : ""
-        )}
-        style={{
-          background: `radial-gradient(650px circle at ${spot.x}% ${spot.y}%, rgba(34,211,238,0.16), rgba(168,85,247,0.12), transparent 55%)`,
-        }}
-      />
+    <div className={cn("group rounded-3xl border border-zinc-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden transition", a.glow)}>
+      <div className={cn("h-[2px] w-full bg-gradient-to-r", a.bar)} />
+      <div className="p-5 md:p-6">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={cn("inline-flex items-center gap-2 font-extrabold", a.title)}>
+                <ProjectTypeIcon type={p.type} />
+                {p.name}
+              </span>
+              {p.featured ? (
+                <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Featured
+                </span>
+              ) : null}
+              <Tag>{p.year}</Tag>
+            </div>
 
-      {/* top code bar */}
-      <div className="relative px-5 py-4 border-b border-zinc-800 bg-black/20 rounded-t-2xl flex items-center gap-3">
-        <div className="flex gap-2">
-          <span className="h-3 w-3 rounded-full bg-red-400/90" />
-          <span className="h-3 w-3 rounded-full bg-yellow-400/90" />
-          <span className="h-3 w-3 rounded-full bg-green-500/90" />
-        </div>
-        <div className="text-xs font-mono text-zinc-400 truncate">
-          {`project.${String(p.id).padStart(2, "0")}.tsx`}
+            <p className="text-sm text-zinc-700 leading-relaxed">
+              {p.description}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+          >
+            <span className="hidden sm:inline">Code</span>
+            <ChevronDown className={cn("h-4 w-4 transition", open ? "rotate-180" : "")} />
+          </button>
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
-          {p.featured && (
-            <span className="text-[11px] font-mono px-2 py-1 rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200">
-              featured
-            </span>
-          )}
-          <span className="text-[11px] font-mono px-2 py-1 rounded-full border border-zinc-800 bg-black/30 text-zinc-300">
-            click
-          </span>
-        </div>
+        {/* features */}
+        {p.features?.length ? (
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {p.features.slice(0, 4).map((f) => (
+              <div key={f} className="flex gap-2 text-sm text-zinc-700">
+                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-zinc-400 flex-shrink-0" />
+                <span className="leading-relaxed">{f}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {/* stack */}
+        {p.techStack?.length ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {p.techStack.slice(0, 10).map((t) => (
+              <Tag key={t}>{t}</Tag>
+            ))}
+          </div>
+        ) : null}
+
+        {/* links */}
+        {(p.links?.github && p.links.github !== "#") ||
+        (p.links?.live && p.links.live !== "#") ? (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {p.links?.github && p.links.github !== "#" ? (
+              <a
+                href={p.links.github}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+              >
+                <Github className="h-4 w-4" />
+                Code
+              </a>
+            ) : null}
+
+            {p.links?.live && p.links.live !== "#" ? (
+              <a
+                href={p.links.live}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition"
+              >
+                <ExternalLink className="h-4 w-4" />
+                Live
+              </a>
+            ) : null}
+          </div>
+        ) : null}
+
+        {/* code preview drawer */}
+        {open ? (
+          <div className="mt-5">
+            <CodePreview p={p} />
+          </div>
+        ) : null}
       </div>
-
-      {/* content */}
-      <div className="relative p-5">
-        <div className="text-lg font-semibold text-zinc-100">{p.title}</div>
-
-        <div className="mt-3 flex flex-wrap gap-2">
-          {(p.tags || []).slice(0, 5).map((t) => (
-            <span
-              key={t}
-              className="text-xs px-2 py-1 rounded-full border border-zinc-800 bg-black/30 text-zinc-200"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-
-        <ul className="mt-4 text-sm text-zinc-300/80 list-disc pl-5 space-y-1">
-          {(p.highlights || []).slice(0, 3).map((h) => (
-            <li key={h} className="marker:text-zinc-500">
-              {h}
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-5 flex items-center gap-3 text-sm">
-          <span className="text-cyan-300">Open preview</span>
-          <span className="text-zinc-600">•</span>
-          <span className="text-zinc-400">snap scroll</span>
-        </div>
-      </div>
-
-      {/* bottom glow blobs */}
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-fuchsia-400/10 blur-3xl" />
-      <div className="pointer-events-none absolute -top-24 -left-24 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
-    </button>
+    </div>
   );
 }
 
 export default function Projects() {
-  const list = useMemo(() => projects || [], []);
-  const scrollerRef = useRef(null);
-  const [active, setActive] = useState(null);
+  const projects = useMemo(
+    () => [
+      {
+        id: 1,
+        name: "Neuva Life Sciences Web Platform",
+        type: "full-stack",
+        year: "2025",
+        featured: true,
+        tools: ["React", "Vite", "ESLint"],
+        description:
+          "Created a React-based platform using Vite and ESLint, reducing bundle size from 5MB to 3MB and ensuring responsive performance across devices.",
+        features: [
+          "Fast dev + optimized builds with Vite",
+          "Reduced bundle size (5MB → 3MB)",
+          "Maintained quality with ESLint rules",
+        ],
+        techStack: ["React", "Vite", "JavaScript", "ESLint"],
+        metrics: { "Bundle Size": "5MB → 3MB" },
+        links: { github: "#", live: "#" },
+      },
+      {
+        id: 2,
+        name: "Yelp Business Footfall Prediction",
+        type: "ai-ml",
+        year: "2025",
+        featured: true,
+        tools: ["Python", "Pandas", "RF", "XGBoost", "SMOTE"],
+        description:
+          "Processed 1.94M records; trained Random Forest and XGBoost with SMOTE, improving accuracy from 0.75 to 0.88 (AUC-ROC: 0.89).",
+        features: [
+          "Processed 1.94M records",
+          "Handled class imbalance with SMOTE",
+          "Improved model metrics with RF + XGBoost",
+        ],
+        techStack: ["Python", "Pandas", "NumPy", "Scikit-learn", "XGBoost"],
+        metrics: { Records: "1.94M", Accuracy: "0.75 → 0.88", "AUC-ROC": "0.89" },
+        links: { github: "#", live: "#" },
+      },
+      {
+        id: 3,
+        name: "Linux Chat Service",
+        type: "systems",
+        year: "2025",
+        featured: false,
+        tools: ["C", "TCP/IP", "pthreads", "Linux"],
+        description:
+          "Built a client–server chat service using TCP/IP sockets in C, handling concurrent connections with pthreads and safe shared-resource access.",
+        features: [
+          "Client–server TCP/IP design",
+          "Concurrency via pthreads",
+          "Graceful shutdown + buffer safety",
+        ],
+        techStack: ["C", "Linux", "TCP/IP", "pthreads"],
+        metrics: { Concurrency: "pthreads", Networking: "TCP/IP sockets" },
+        links: { github: "#", live: "#" },
+      },
+    ],
+    []
+  );
 
-  // optional arrow key scrolling while focusing the carousel area
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState("all");
 
-    const onKey = (e) => {
-      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-      e.preventDefault();
-      const dir = e.key === "ArrowRight" ? 1 : -1;
-      el.scrollBy({ left: dir * 420, behavior: "smooth" });
-    };
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return projects.filter((p) => {
+      const matchType = type === "all" ? true : p.type === type;
+      const matchQuery = !q
+        ? true
+        : p.name.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q) ||
+          p.techStack.join(" ").toLowerCase().includes(q);
+      return matchType && matchQuery;
+    });
+  }, [projects, query, type]);
 
-    el.addEventListener("keydown", onKey);
-    return () => el.removeEventListener("keydown", onKey);
-  }, []);
+  const spotlight = useMemo(() => projects.find((p) => p.featured) || projects[0], [projects]);
 
   return (
-    <div className="space-y-6">
-      {/* Header (keep your style) */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 p-6 relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-fuchsia-400/10 blur-3xl" />
-        <p className="font-mono text-sm text-zinc-400">{"// projects.tsx"}</p>
-        <h2 className="mt-2 text-2xl font-semibold text-zinc-100">Projects</h2>
-        <p className="mt-2 text-zinc-300">
-          Snap carousel + magnetic hover. Click a card for a full preview modal.
-        </p>
+    <div className="space-y-8">
+      {/* header row */}
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <div className="inline-flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-cyan-600" />
+            <span className="text-xs font-bold tracking-widest text-cyan-700">
+              PROJECTS
+            </span>
+          </div>
+          <h3 className="mt-3 text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900">
+            Selected work with impact + metrics
+          </h3>
+          <p className="mt-2 text-sm text-zinc-600">
+            Search, filter, and open code previews.
+          </p>
+        </div>
+
+        {/* search */}
+        <div className="w-full lg:w-[420px] rounded-2xl border border-zinc-200 bg-white/70 px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-2 text-zinc-600">
+            <Search className="h-4 w-4" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search projects…"
+              className="w-full bg-transparent outline-none text-sm placeholder:text-zinc-400"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Carousel */}
-      <div className="relative">
-        {/* subtle edge fade */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-black/40 to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-black/40 to-transparent z-10" />
+      {/* filter chips */}
+      <div className="flex flex-wrap gap-2">
+        <TypeChip active={type === "all"} label="All" onClick={() => setType("all")} />
+        <TypeChip active={type === "full-stack"} label="Full-Stack" onClick={() => setType("full-stack")} />
+        <TypeChip active={type === "ai-ml"} label="AI / ML" onClick={() => setType("ai-ml")} />
+        <TypeChip active={type === "systems"} label="Systems" onClick={() => setType("systems")} />
+      </div>
 
-        <div
-          ref={scrollerRef}
-          tabIndex={0}
-          className={cn(
-            "flex gap-4 overflow-x-auto pb-3 pt-1",
-            "snap-x snap-mandatory scroll-smooth",
-            "focus:outline-none",
-            "[scrollbar-width:thin]",
-            "[-webkit-overflow-scrolling:touch]"
-          )}
-        >
-          {/* nice spacing at ends */}
-          <div className="shrink-0 w-2 sm:w-6" />
-          {list.map((p, i) => (
-            <ProjectCard key={p.id} p={p} index={i} onOpen={setActive} />
+      {/* spotlight */}
+      <Spotlight p={spotlight} />
+
+      {/* grid */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {filtered
+          .filter((p) => p.id !== spotlight.id)
+          .map((p) => (
+            <ProjectCard key={p.id} p={p} />
           ))}
-          <div className="shrink-0 w-2 sm:w-6" />
-        </div>
-
-        {/* hint text */}
-        <div className="mt-2 text-xs text-zinc-400 flex items-center gap-2">
-          <span className="font-mono px-2 py-1 rounded border border-zinc-800 bg-black/30">
-            tip
-          </span>
-          Scroll horizontally (trackpad/mousewheel) • Use ← → when focused
-        </div>
       </div>
 
-      {/* Modal */}
-      <ProjectModal
-        project={active}
-        open={!!active}
-        onClose={() => setActive(null)}
-      />
+      {filtered.length === 0 ? (
+        <div className="rounded-2xl border border-zinc-200 bg-white/70 px-5 py-6 text-sm text-zinc-600">
+          No projects match “{query}”.
+        </div>
+      ) : null}
     </div>
   );
 }

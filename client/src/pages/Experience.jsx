@@ -1,116 +1,144 @@
 import { useMemo } from "react";
 
-function ExpCard({ exp }) {
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+/**
+ * Neha-style code window (dark code area, colorful top gradient, mac dots)
+ */
+function CodeWindow({ exp }) {
   return (
-    <div className="relative rounded-2xl border border-zinc-800 bg-zinc-900 shadow-[0_30px_90px_rgba(0,0,0,0.60)] overflow-hidden">
-      {/* colorful top line */}
+    <div className="w-full">
+      {/* top gradient line */}
       <div className="flex">
-        <div className="h-px w-1/2 bg-gradient-to-r from-transparent via-fuchsia-500 to-violet-500" />
-        <div className="h-px w-1/2 bg-gradient-to-r from-violet-500 to-transparent" />
+        <div className="h-[2px] w-1/2 bg-gradient-to-r from-transparent via-pink-500 to-violet-600" />
+        <div className="h-[2px] w-1/2 bg-gradient-to-r from-violet-600 to-transparent" />
       </div>
 
-      {/* window bar */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-zinc-800 bg-zinc-950">
-        <div className="flex gap-2">
-          <span className="h-3 w-3 rounded-full bg-red-400/90" />
-          <span className="h-3 w-3 rounded-full bg-yellow-400/90" />
-          <span className="h-3 w-3 rounded-full bg-green-500/90" />
-        </div>
+      <div className="rounded-xl border border-zinc-200 bg-[#2F2F2F] shadow-[0_18px_40px_-20px_rgba(0,0,0,0.45)] overflow-hidden">
+        {/* header row */}
+        <div className="flex items-center gap-3 px-4 md:px-6 py-3 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-red-400" />
+            <span className="h-3 w-3 rounded-full bg-orange-400" />
+            <span className="h-3 w-3 rounded-full bg-emerald-500" />
+          </div>
 
-        {/* logo + company */}
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-700 grid place-items-center overflow-hidden">
+          <div className="flex items-center gap-2 min-w-0">
             {exp.logo ? (
               <img
                 src={exp.logo}
                 alt={`${exp.company} logo`}
-                className="h-full w-full object-cover"
+                className="h-8 w-8 rounded-full object-cover border border-white/10"
                 loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
               />
-            ) : (
-              <span className="text-xs font-semibold text-zinc-200">
-                {exp.company
-                  .split(" ")
-                  .slice(0, 2)
-                  .map((w) => w[0])
-                  .join("")
-                  .toUpperCase()}
-              </span>
-            )}
-          </div>
+            ) : null}
 
-          <div className="min-w-0">
-            <div className="text-zinc-100 font-semibold text-lg truncate">
-              {exp.company}
+            <div className="min-w-0">
+              <p className="truncate text-sm md:text-base font-semibold text-white">
+                {exp.company}
+              </p>
+              <p className="truncate text-xs text-white/60">{exp.location}</p>
             </div>
-            <div className="text-zinc-400 text-sm truncate">{exp.location}</div>
           </div>
         </div>
 
-        <div className="ml-auto text-xs font-mono text-zinc-300 border border-zinc-700 bg-black px-2 py-1 rounded">
-          {exp.duration}
-        </div>
-      </div>
+        {/* code body */}
+        <div className="px-4 md:px-6 py-4 md:py-6">
+          <code className="font-mono text-[12px] md:text-sm leading-relaxed">
+            <div className="opacity-95">
+              <span className="mr-2 text-pink-400">const</span>
+              <span className="mr-2 text-white">job</span>
+              <span className="mr-2 text-pink-400">=</span>
+              <span className="text-white/60">{"{"}</span>
+            </div>
 
-      {/* code area */}
-      <div className="px-5 py-6 border-t-2 border-indigo-900/60 bg-zinc-950">
-        <code className="font-mono text-[13px] sm:text-sm leading-6 block">
-          <div>
-            <span className="text-pink-400 mr-2">const</span>
-            <span className="text-white mr-2">job</span>
-            <span className="text-pink-400 mr-2">=</span>
-            <span className="text-zinc-400">{"{"}</span>
-          </div>
+            <div className="mt-2">
+              <span className="ml-4 md:ml-6 mr-2 text-white">myRole:</span>
+              <span className="text-orange-300">"{exp.title}"</span>
+              <span className="text-white/60">,</span>
+            </div>
 
-          <div className="ml-5 mt-2">
-            <span className="text-white mr-2">myRole:</span>
-            <span className="text-orange-300">"{exp.title}"</span>
-            <span className="text-zinc-400">,</span>
-          </div>
+            <div>
+              <span className="ml-4 md:ml-6 mr-2 text-white">duration:</span>
+              <span className="text-orange-300">"{exp.duration}"</span>
+              <span className="text-white/60">,</span>
+            </div>
 
-          <div className="ml-5">
-            <span className="text-white mr-2">focus:</span>
-            <span className="text-zinc-400">[ </span>
-            {exp.tools.map((t, i) => (
-              <span key={t}>
-                <span className="text-amber-300">'{t}'</span>
-                <span className="text-zinc-400">
-                  {i === exp.tools.length - 1 ? " " : ", "}
+            <div>
+              <span className="ml-4 md:ml-6 mr-2 text-white">type:</span>
+              <span className="text-orange-300">"{exp.type}"</span>
+              <span className="text-white/60">,</span>
+            </div>
+
+            <div className="mt-2">
+              <span className="ml-4 md:ml-6 mr-2 text-white">tools:</span>
+              <span className="text-white/60">{"["}</span>
+              {exp.tools.map((tag, i) => (
+                <span key={tag}>
+                  <span className="text-amber-300">"{tag}"</span>
+                  {i !== exp.tools.length - 1 ? (
+                    <span className="text-white/60">, </span>
+                  ) : null}
                 </span>
-              </span>
-            ))}
-            <span className="text-zinc-400">]</span>
-            <span className="text-zinc-400">,</span>
-          </div>
-
-          <div className="ml-5 mt-2">
-            <span className="text-white mr-2">impact:</span>
-            <span className="text-cyan-300">{` "${exp.description}"`}</span>
-          </div>
-
-          {exp.bullets?.length ? (
-            <>
-              <div className="ml-5 mt-2">
-                <span className="text-white mr-2">highlights:</span>
-                <span className="text-zinc-400">[</span>
-              </div>
-              {exp.bullets.map((b) => (
-                <div key={b} className="ml-10">
-                  <span className="text-emerald-300">"{b}"</span>
-                  <span className="text-zinc-400">,</span>
-                </div>
               ))}
-              <div className="ml-5">
-                <span className="text-zinc-400">]</span>
-                <span className="text-zinc-400">,</span>
-              </div>
-            </>
-          ) : null}
+              <span className="text-white/60">{"]"}</span>
+              <span className="text-white/60">,</span>
+            </div>
 
-          <div className="mt-2">
-            <span className="text-zinc-400">{"};"}</span>
-          </div>
-        </code>
+            <div className="mt-2">
+              <span className="ml-4 md:ml-6 mr-2 text-white">impact:</span>
+              <span className="text-cyan-300">"{exp.summary}"</span>
+              <span className="text-white/60">,</span>
+            </div>
+
+            {exp.bullets?.length ? (
+              <div className="mt-2">
+                <span className="ml-4 md:ml-6 mr-2 text-white">highlights:</span>
+                <span className="text-white/60">{"["}</span>
+
+                <div className="mt-2 space-y-1">
+                  {exp.bullets.map((b, idx) => (
+                    <div key={b} className="ml-8 md:ml-12">
+                      <span className="text-emerald-300">"{b}"</span>
+                      <span className="text-white/60">
+                        {idx === exp.bullets.length - 1 ? "" : ","}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="ml-4 md:ml-6">
+                  <span className="text-white/60">{"]"}</span>
+                  <span className="text-white/60">,</span>
+                </div>
+              </div>
+            ) : null}
+
+            {exp.metrics?.length ? (
+              <div className="mt-2">
+                <span className="ml-4 md:ml-6 mr-2 text-white">metrics:</span>
+                <span className="text-white/60">{"["}</span>
+                {exp.metrics.map((m, i) => (
+                  <span key={m}>
+                    <span className="text-violet-300">"{m}"</span>
+                    {i !== exp.metrics.length - 1 ? (
+                      <span className="text-white/60">, </span>
+                    ) : null}
+                  </span>
+                ))}
+                <span className="text-white/60">{"]"}</span>
+                <span className="text-white/60">,</span>
+              </div>
+            ) : null}
+
+            <div className="mt-2 text-white/60">{"};"}</div>
+          </code>
+        </div>
       </div>
     </div>
   );
@@ -121,92 +149,92 @@ export default function Experience() {
     () => [
       {
         id: 1,
-        title: "Graduate Student — Information Systems",
-        company: "Binghamton University",
-        location: "New York, USA",
-        duration: "Aug 2024 — Present",
-        tools: ["Data Management", "Systems", "Full-Stack", "Cloud", "AI/ML"],
-        description:
-          "Pursuing MS with a focus on production-grade full-stack engineering, data systems, and applied ML projects.",
+        title: "Junior Software Developer",
+        company: "Maitra Medtech (IISc)",
+        location: "India",
+        duration: "Aug 2024 — Dec 2024",
+        type: "Internship / Contract",
+        tools: ["RBAC", "REST APIs", "SQL", "Performance Tuning"],
+        summary:
+          "Strengthened platform security and improved backend performance for a healthcare web application.",
         bullets: [
-          "Built a VS Code–style portfolio UI with React + Tailwind + animations.",
-          "Integrated a Node/Express API to serve dynamic project data.",
+          "Implemented RBAC and refactored API endpoints with backend engineers.",
+          "Optimized DB queries with focused SELECTs + indexing, cutting response time by ~200ms.",
         ],
-        logo: "/exp/iisc.jpeg",
+        metrics: ["~200ms faster responses", "RBAC security upgrade"],
+        logo: "/exp/maitra.jpeg",
       },
       {
         id: 2,
-        title: "Junior Software Engineer",
-        company: "Aarnaq MedTech Private Limited",
-        location: "Bengaluru, India",
-        duration: "Jun 2022 — May 2024",
-        tools: ["Python", "ETL", "Automation", "Testing", "Data Pipelines"],
-        description:
-          "Improved internal data workflows and reliability through automation, testing, and performance optimization.",
+        title: "Software Developer Intern",
+        company: "Aarnaq MedTech Pvt Ltd (IISc)",
+        location: "India",
+        duration: "Apr 2023 — Jul 2024",
+        type: "Internship",
+        tools: ["Mobile App", "OCR", "Firebase", "Dashboards", "BRDs", "UML"],
+        summary:
+          "Built automation + analytics for real workflows—reduced task time and reporting load.",
         bullets: [
-          "Reduced data extraction time by ~40% by optimizing scripts/pipeline flow.",
-          "Automated 500+ tests to improve release confidence and reduce regressions.",
-          "Cut manual operational effort by ~50% via automation tooling.",
+          "Integrated camera + OCR to reduce reporting time from ~15 minutes to <5 minutes.",
+          "Built dashboards reducing reporting requests from 50/week to 30/week.",
+          "Standardized pipelines cutting ad-hoc DB queries from 40/day to 15/day.",
         ],
-        logo: "exp/iisc.png",
+        metrics: ["15 min → <5 min", "50→30 reports/week", "40→15 queries/day"],
+        logo: "/exp/iisc.png",
       },
       {
         id: 3,
-        title: "Junior Software Engineer",
-        company: "Maitra MedTech Private Limited",
-        location: "Bengaluru, India",
-        duration: "Feb 2022 — May 2022",
-        tools: ["React", "Node.js", "API Integration", "UI", "Prototyping"],
-        description:
-          "Built and iterated product-facing web components and internal tooling with clean UI patterns.",
+        title: "UI/UX Designer Intern",
+        company: "NeuraStim Smartphone (IISc Collaboration)",
+        location: "Delaware, USA / IISc",
+        duration: "Aug 2023 — Nov 2023",
+        type: "Internship",
+        tools: ["Figma", "Design Systems", "Event Logging", "WCAG 2.1 AA"],
+        summary:
+          "Designed user flows for a neuro-health app and partnered with engineers to ship accessible UI.",
         bullets: [
-          "Implemented responsive UI components and improved UX iteration speed.",
-          "Worked with APIs and modular components for maintainable delivery.",
+          "Built 6 Figma prototypes; tested with 20 users (52s → 35s task time).",
+          "Added event logging and reduced iteration cycles from 4 days to 3 days.",
+          "Ensured WCAG 2.1 AA compliance across devices.",
         ],
-        logo: "/exp/maitra.jpeg",
+        metrics: ["52s → 35s", "4d → 3d cycles", "WCAG 2.1 AA"],
+        logo: "/exp/iisc.png",
       },
-      
     ],
     []
   );
 
   return (
     <div className="relative">
-      {/* Keep your original top strip style */}
-      {/* Keep your original top strip style */}
-<div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 p-6">
-  <p className="font-mono text-sm text-zinc-400">{"// experience.tsx"}</p>
-
-  <h2 className="mt-2 text-2xl font-semibold text-white">
-    Experience
-  </h2>
-
-  <p className="mt-2 text-zinc-300">
-    Professional roles, research, and engineering experience.
-  </p>
+      {/* ✅ ONLY the label stays sticky */}
+      <div className="mb-8">
+  <div className="flex items-center gap-4">
+    <span className="bg-[#2F2F2F] text-white px-6 py-3 text-sm md:text-base font-semibold rounded-xl shadow-sm">
+      EXPERIENCE
+    </span>
+    <span className="w-full h-[2px] bg-gradient-to-r from-pink-500 via-violet-600 to-transparent" />
+  </div>
 </div>
 
-
-
-      {/* Stacked sticky cards */}
-      <div className="pt-10 space-y-8">
+      {/* ✅ cards stack and stick */}
+      <div className="pt-8 space-y-8">
         {experiences.map((exp, index) => (
           <div
             key={exp.id}
             className="sticky"
             style={{
-              top: 110 + index * 18, // overlap strength (increase to 24 for more overlap)
+              top: 140 + index * 18, // spacing between stacked sticky cards
               zIndex: 10 + index,
             }}
           >
-            <div className="mx-auto max-w-3xl">
-              <ExpCard exp={exp} />
+            <div className="mx-auto max-w-4xl">
+              <CodeWindow exp={exp} />
             </div>
           </div>
         ))}
 
-        {/* spacer so the last card can scroll into view */}
-        <div className="h-[260px]" />
+        {/* spacer so last card can scroll out cleanly */}
+        <div className="h-[220px]" />
       </div>
     </div>
   );

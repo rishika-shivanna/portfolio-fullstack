@@ -1,222 +1,180 @@
 import { useState } from "react";
+import { Mail, Linkedin, Github, Download, Copy, Check, FileText } from "lucide-react";
 
-export default function Contact() {
-  const email = "rshivanna@binghamton.edu";
-  const github = "https://github.com/rishika-shivanna";
-  const linkedin = "https://www.linkedin.com/in/YOUR-LINK";
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
-  // ✅ Drive resume link (opens Google Drive preview UI)
-  const resumeDriveView =
-    "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing";
+function driveViewUrl(fileId) {
+  return `https://drive.google.com/file/d/${fileId}/view`;
+}
+function driveDownloadUrl(fileId) {
+  return `https://drive.google.com/uc?export=download&id=${fileId}`;
+}
+function extractDriveFileId(url) {
+  if (!url || typeof url !== "string") return "";
+  const m = url.match(/\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
+  return m ? m[1] : "";
+}
 
-  const subject = encodeURIComponent("Hello Rishika — Portfolio");
-  const body = encodeURIComponent(
-    "Hi Rishika,\n\nI saw your portfolio and wanted to connect.\n\nThanks!"
-  );
-  const mailto = `mailto:${email}?subject=${subject}&body=${body}`;
-
-  const [copied, setCopied] = useState("");
-
-  const copy = async (text, key) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(key);
-      window.setTimeout(() => setCopied(""), 1200);
-    } catch {
-      window.prompt("Copy this:", text);
-    }
+function ContactCard({
+  tone = "indigo",
+  icon,
+  title,
+  value,
+  hint,
+  actionLabel,
+  href,
+  copyValue,
+  children,
+}) {
+  const toneMap = {
+    indigo: { bar: "from-indigo-600 to-blue-600", bg: "from-indigo-50 to-blue-50", btn: "bg-indigo-600 hover:bg-indigo-700", ring: "ring-indigo-200", icon: "text-indigo-600" },
+    emerald:{ bar: "from-emerald-600 to-teal-600", bg: "from-emerald-50 to-teal-50", btn: "bg-emerald-600 hover:bg-emerald-700", ring: "ring-emerald-200", icon: "text-emerald-600" },
+    rose:   { bar: "from-rose-600 to-pink-600", bg: "from-rose-50 to-pink-50", btn: "bg-rose-600 hover:bg-rose-700", ring: "ring-rose-200", icon: "text-rose-600" },
+    violet: { bar: "from-violet-600 to-fuchsia-600", bg: "from-violet-50 to-fuchsia-50", btn: "bg-violet-600 hover:bg-violet-700", ring: "ring-violet-200", icon: "text-violet-600" },
   };
 
+  const t = toneMap[tone] || toneMap.indigo;
+  const [copied, setCopied] = useState(false);
+
+  async function onCopy() {
+    try {
+      await navigator.clipboard.writeText(copyValue || value || "");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+    } catch {}
+  }
+
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-950/40 p-6">
-        <p className="font-mono text-sm text-zinc-400">{"// contact.tsx"}</p>
-        <h2 className="mt-2 text-2xl font-semibold text-white">Contact</h2>
-        <p className="mt-2 text-zinc-300">
-          Quick ways to reach me. Email is the fastest.
-        </p>
-      </div>
-
-      {/* Cards */}
-      <div className="grid md:grid-cols-3 gap-6">
-        {/* EMAIL */}
-        <div className="group relative rounded-2xl border border-zinc-800 bg-zinc-950/70 p-6 overflow-hidden transition hover:-translate-y-1">
-          <div className="pointer-events-none absolute -inset-20 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-cyan-500/15 via-fuchsia-500/10 to-transparent blur-2xl" />
-
-          <div className="relative">
-            <div className="text-sm font-mono text-zinc-400">email</div>
-
-            <div className="mt-2 text-[15px] font-medium text-white break-all">
-              {email}
+    <div className="rounded-3xl border border-zinc-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden">
+      <div className={cn("h-1.5 w-full bg-gradient-to-r", t.bar)} />
+      <div className={cn("p-6", "bg-gradient-to-r", t.bg)}>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className={cn("h-12 w-12 rounded-2xl bg-white grid place-items-center ring-1", t.ring)}>
+              <span className={cn("h-5 w-5", t.icon)}>{icon}</span>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              <a
-                href={mailto}
-                className="rounded-xl border border-cyan-400/40 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-200 hover:bg-cyan-400/20 transition"
-              >
-                Open Email →
-              </a>
+            <div className="min-w-0">
+              <div className="text-lg font-extrabold text-zinc-900">{title}</div>
+              <div className="mt-1 text-zinc-700 truncate">{value}</div>
 
-              <button
-                type="button"
-                onClick={() => copy(email, "email")}
-                className="rounded-xl border border-zinc-700 bg-black/30 px-4 py-2 text-sm text-zinc-200 hover:bg-white/5 transition"
-              >
-                ⧉ Copy
-              </button>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={onCopy}
+                  className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+                >
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  {copied ? "Copied" : "Copy"}
+                </button>
 
-              {copied === "email" ? (
-                <span className="self-center text-xs text-emerald-300">
-                  Copied!
-                </span>
-              ) : null}
-            </div>
+                {hint ? <span className="text-sm text-zinc-500">{hint}</span> : null}
+              </div>
 
-            <div className="mt-4">
-              <a
-                href={mailto}
-                className="inline-block text-sm text-zinc-300 hover:text-white transition"
-              >
-                <span className="relative">
-                  Hire me via email
-                  <span className="absolute left-0 -bottom-1 h-px w-0 bg-gradient-to-r from-cyan-400 to-fuchsia-400 group-hover:w-full transition-all duration-500" />
-                </span>
-                {"  "}↗
-              </a>
+              {children ? <div className="mt-4">{children}</div> : null}
             </div>
           </div>
+
+          {href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className={cn(
+                "shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-extrabold text-white transition",
+                t.btn
+              )}
+            >
+              {actionLabel}
+            </a>
+          ) : null}
         </div>
-
-        {/* GITHUB */}
-        <div className="group relative rounded-2xl border border-zinc-800 bg-zinc-950/70 p-6 overflow-hidden transition hover:-translate-y-1">
-          <div className="pointer-events-none absolute -inset-20 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-fuchsia-500/15 via-violet-500/10 to-transparent blur-2xl" />
-
-          <div className="relative">
-            <div className="text-sm font-mono text-zinc-400">github</div>
-
-            <div className="mt-2 text-[15px] font-medium text-white truncate">
-              {github}
-            </div>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              <a
-                href={github}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-xl border border-fuchsia-400/40 bg-fuchsia-400/10 px-4 py-2 text-sm text-fuchsia-200 hover:bg-fuchsia-400/20 transition"
-              >
-                ↗ Open GitHub
-              </a>
-
-              <button
-                type="button"
-                onClick={() => copy(github, "github")}
-                className="rounded-xl border border-zinc-700 bg-black/30 px-4 py-2 text-sm text-zinc-200 hover:bg-white/5 transition"
-              >
-                ⧉ Copy
-              </button>
-
-              {copied === "github" ? (
-                <span className="self-center text-xs text-emerald-300">
-                  Copied!
-                </span>
-              ) : null}
-            </div>
-
-            <div className="mt-4">
-              <a
-                href={github}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block text-sm text-zinc-300 hover:text-white transition"
-              >
-                <span className="relative">
-                  View my repos
-                  <span className="absolute left-0 -bottom-1 h-px w-0 bg-gradient-to-r from-fuchsia-400 to-violet-400 group-hover:w-full transition-all duration-500" />
-                </span>
-                {"  "}→
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* LINKEDIN */}
-<div className="group relative rounded-2xl border border-zinc-800 bg-zinc-950/70 p-6 overflow-hidden transition hover:-translate-y-1">
-  <div className="pointer-events-none absolute -inset-20 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-emerald-500/15 via-lime-500/10 to-transparent blur-2xl" />
-  <div className="relative">
-    <div className="text-sm font-mono text-zinc-400">linkedin</div>
-
-    <div className="mt-2 text-[15px] font-medium text-white truncate">
-      {linkedin}
-    </div>
-
-    <div className="mt-4 flex flex-wrap gap-2">
-      <a
-        href={linkedin}
-        target="_blank"
-        rel="noreferrer"
-        className="rounded-xl border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-200 hover:bg-emerald-400/20 transition"
-      >
-        ↗ Open
-      </a>
-
-      <button
-        type="button"
-        onClick={() => copy(linkedin, "linkedin")}
-        className="rounded-xl border border-zinc-700 bg-black/30 px-4 py-2 text-sm text-zinc-200 hover:bg-white/5 transition"
-      >
-        ⧉ Copy
-      </button>
-
-      {copied === "linkedin" ? (
-        <span className="self-center text-xs text-emerald-300">Copied!</span>
-      ) : null}
-    </div>
-  </div>
-</div>
-{/* RESUME (Drive) */}
-<div className="group relative rounded-2xl border border-zinc-800 bg-zinc-950/70 p-6 overflow-hidden transition hover:-translate-y-1">
-  <div className="pointer-events-none absolute -inset-20 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-cyan-500/15 via-fuchsia-500/10 to-transparent blur-2xl" />
-
-  <div className="relative">
-    <div className="text-sm font-mono text-zinc-400">resume</div>
-
-    <div className="mt-2 text-[15px] font-medium text-white">
-      Resume (Google Drive)
-    </div>
-
-    <p className="mt-2 text-sm text-zinc-400">
-      Opens Drive preview (then download from Drive).
-    </p>
-
-    <div className="mt-4 flex flex-wrap gap-2">
-      <a
-        href={resumeDriveView}
-        target="_blank"
-        rel="noreferrer"
-        className="rounded-xl border border-cyan-400/40 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-200 hover:bg-cyan-400/20 transition"
-      >
-        ↗ View
-      </a>
-
-      <button
-        type="button"
-        onClick={() => copy(resumeDriveView, "resume")}
-        className="rounded-xl border border-zinc-700 bg-black/30 px-4 py-2 text-sm text-zinc-200 hover:bg-white/5 transition"
-      >
-        ⧉ Copy
-      </button>
-
-      {copied === "resume" ? (
-        <span className="self-center text-xs text-emerald-300">Copied!</span>
-      ) : null}
-    </div>
-  </div>
-</div>
-
       </div>
+    </div>
+  );
+}
+
+export default function ContactCards({
+  email = "rshivanna@binghamton.edu",
+  linkedin = "https://www.linkedin.com/in/rishika-shivanna/",
+  github = "https://github.com/rishika-shivanna",
+  resumeUrl = "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing", // ✅ your link
+}) {
+  const safeLinkedin = typeof linkedin === "string" ? linkedin : "";
+  const safeGithub = typeof github === "string" ? github : "";
+
+  const fileId = extractDriveFileId(resumeUrl);
+  const hasResume = Boolean(fileId);
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-6">
+      <ContactCard
+        tone="indigo"
+        icon={<Mail />}
+        title="Email"
+        value={email || "—"}
+        hint="Best way to reach me"
+        actionLabel="Send"
+        href={email ? `mailto:${email}` : ""}
+        copyValue={email}
+      />
+
+      <ContactCard
+        tone="emerald"
+        icon={<Linkedin />}
+        title="LinkedIn"
+        value={safeLinkedin ? safeLinkedin.replace(/^https?:\/\//, "") : "—"}
+        hint="Connect & message"
+        actionLabel="Open"
+        href={safeLinkedin || ""}
+        copyValue={safeLinkedin}
+      />
+
+      <ContactCard
+        tone="rose"
+        icon={<Github />}
+        title="GitHub"
+        value={safeGithub ? safeGithub.replace(/^https?:\/\//, "") : "—"}
+        hint="Projects & code"
+        actionLabel="Open"
+        href={safeGithub || ""}
+        copyValue={safeGithub}
+      />
+
+      <ContactCard
+        tone="violet"
+        icon={<FileText />}
+        title="Resume"
+        value={hasResume ? "Download PDF" : "Not available"}
+        hint={hasResume ? "Google Drive" : "Add Drive link"}
+        actionLabel={hasResume ? "Open" : ""}
+        href={hasResume ? driveViewUrl(fileId) : ""}
+        copyValue={hasResume ? driveViewUrl(fileId) : ""}
+      >
+        {hasResume ? (
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={driveViewUrl(fileId)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+            >
+              <FileText className="h-4 w-4" />
+              Open in Drive
+            </a>
+
+            <a
+              href={driveDownloadUrl(fileId)}
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+            >
+              <Download className="h-4 w-4" />
+              Download PDF
+            </a>
+          </div>
+        ) : null}
+      </ContactCard>
     </div>
   );
 }
