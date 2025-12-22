@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Download, Github, Linkedin, Mail, Cpu } from "lucide-react";
 import profileImg from "../assets/profile.jpg";
 import ContactCards from "./Contact";
-import Navbar from './components/Navbar';
+import Navbar from "../components/Navbar";
 import Experience from "./Experience";
 import Projects from "./Projects";
 import Education from "./Education";
