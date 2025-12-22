@@ -244,7 +244,7 @@ export default function Home({ jump = "home" }) {
                   <div className="pl-5 text-white/90">
                     skills:{" "}
                     <span className="text-yellow-300">
-                      ['React','Python','SQL','Node','ML','AWS']
+                      ['React','Python','SQL','Flutter','ML','AWS/GCP']
                     </span>
                     ,
                   </div>
@@ -303,9 +303,9 @@ export default function Home({ jump = "home" }) {
                 <p>
                   I've worked across{" "}
                   <span className="font-semibold text-indigo-700">Full-Stack development</span>,{" "}
-                  <span className="font-semibold text-purple-700">AI / ML</span>, and{" "}
-                  <span className="font-semibold text-pink-700">systems programming</span>, with
-                  hands-on experience in React, Node.js, Python, SQL, cloud platforms (AWS/GCP),
+                  <span className="font-semibold text-purple-700">AIML</span>, and{" "}
+                  <span className="font-semibold text-pink-700">Cloud and Mobile apps</span>, with
+                  hands-on experience in React, Node.js, Python, SQL, cloud platforms (AWS/GCP), Flutter
                   and data-driven ML pipelines.
                 </p>
 

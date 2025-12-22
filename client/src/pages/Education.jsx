@@ -94,8 +94,6 @@ export default function Education() {
         level: "MASTERS",
         school: "SUNY Binghamton University",
         location: "Binghamton, NY, United States",
-        
-        note: "Focused on systems, data, and building production-quality software.",
         logo: "/logos/binghamton.jpg",
       },
       {
@@ -104,8 +102,6 @@ export default function Education() {
         level: "BACHELORS",
         school: "Global Academy of Technology",
         location: "Bangalore, India",
-        
-        note: "Strong fundamentals in software engineering and core CS subjects.",
         logo: "/logos/gat.jpeg",
       },
     ],

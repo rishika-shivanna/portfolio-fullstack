@@ -153,7 +153,6 @@ export default function Experience() {
         company: "Maitra Medtech (IISc)",
         location: "India",
         duration: "Aug 2024 — Dec 2024",
-        type: "Internship / Contract",
         tools: ["RBAC", "REST APIs", "SQL", "Performance Tuning"],
         summary:
           "Strengthened platform security and improved backend performance for a healthcare web application.",
