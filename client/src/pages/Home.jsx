@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Download, Github, Linkedin, Mail, Cpu } from "lucide-react";
 import profileImg from "../assets/profile.jpg";
-
 import ContactCards from "./Contact";
+import Navbar from './components/Navbar';
 import Experience from "./Experience";
 import Projects from "./Projects";
 import Education from "./Education";
@@ -81,8 +81,7 @@ export default function Home({ jump = "home" }) {
     email: "mailto:rshivanna@binghamton.edu",
     linkedin: "https://www.linkedin.com/in/rishika-shivanna/",
     github: "https://github.com/rishika-shivanna",
-    resume:
-      "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing",
+    resume: "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing",
   };
 
   const statusLines = useMemo(
@@ -90,7 +89,7 @@ export default function Home({ jump = "home" }) {
       "Full-Stack + ML • shipping clean systems",
       "Open to SWE / Full-Stack roles",
       "Performance • Security • UI polish",
-      "Let’s build something great",
+      "Let's build something great",
     ],
     []
   );
@@ -104,10 +103,7 @@ export default function Home({ jump = "home" }) {
   }, [jump]);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-indigo-50 via-white to-emerald-50 overflow-x-hidden">
-      {/* ✅ If your navbar is fixed, this removes the “gap” under it */}
-      <div className="h-20 sm:h-24" />
-
+    <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-emerald-50">
       {/* soft colorful blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-300/30 blur-3xl" />
@@ -115,14 +111,17 @@ export default function Home({ jump = "home" }) {
         <div className="absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-emerald-300/25 blur-3xl" />
       </div>
 
-      {/* ✅ Responsive padding + no random top spacing */}
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-10 space-y-10 pb-16">
-        {/* HERO */}
-        <section id="home" className="scroll-mt-28 pt-0">
-          {/* ✅ 1 col on small, 2 col from md */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      {/* Navbar at the top */}
+      <Navbar />
+
+      <div className="relative mx-auto max-w-6xl px-6 lg:px-10 space-y-10 pb-16 pt-24">
+
+        {/* HERO SECTION - Already defined in this component */}
+        <section id="home" className="scroll-mt-28">
+          <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-center">
             {/* LEFT */}
-            <div className="w-full max-w-none space-y-6">
+            <div className="space-y-6">
+              {/* Badge */}
               <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200/60 bg-gradient-to-r from-indigo-100/80 to-purple-100/80 px-4 py-2 backdrop-blur">
                 <Cpu className="h-4 w-4 text-indigo-700" />
                 <span className="text-sm font-semibold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
@@ -130,6 +129,7 @@ export default function Home({ jump = "home" }) {
                 </span>
               </div>
 
+              {/* Heading */}
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-zinc-900">
                 Hey there, <br />
                 I am{" "}
@@ -220,19 +220,17 @@ export default function Home({ jump = "home" }) {
               </div>
             </div>
 
-            {/* RIGHT */}
-            <div className="relative w-full">
+            {/* RIGHT - Code window */}
+            <div className="relative">
               <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-indigo-400/15 blur-2xl" />
               <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-purple-400/15 blur-2xl" />
 
-              <div className="w-full rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 text-white shadow-2xl">
+              <div className="rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 text-white shadow-2xl">
                 <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-zinc-900/80">
                   <span className="h-3 w-3 rounded-full bg-red-400" />
                   <span className="h-3 w-3 rounded-full bg-yellow-400" />
                   <span className="h-3 w-3 rounded-full bg-green-400" />
-                  <div className="ml-auto text-xs text-white/60 font-mono">
-                    coder.ts
-                  </div>
+                  <div className="ml-auto text-xs text-white/60 font-mono">coder.ts</div>
                 </div>
 
                 <div className="p-5 md:p-6 space-y-2 text-[14px] leading-relaxed font-mono">
@@ -241,8 +239,7 @@ export default function Home({ jump = "home" }) {
                   </div>
 
                   <div className="pl-5 text-white/90">
-                    name:{" "}
-                    <span className="text-yellow-300">'Rishika Shivanna'</span>,
+                    name: <span className="text-yellow-300">'Rishika Shivanna'</span>,
                   </div>
                   <div className="pl-5 text-white/90">
                     skills:{" "}
@@ -258,13 +255,11 @@ export default function Home({ jump = "home" }) {
                     quickLearner: <span className="text-emerald-300">true</span>,
                   </div>
                   <div className="pl-5 text-white/90">
-                    problemSolver:{" "}
-                    <span className="text-emerald-300">true</span>,
+                    problemSolver: <span className="text-emerald-300">true</span>,
                   </div>
 
                   <div className="pl-5 text-white/90">
-                    hireable:{" "}
-                    <span className="text-indigo-300">function</span>() {"{"}
+                    hireable: <span className="text-indigo-300">function</span>() {"{"}
                   </div>
 
                   <div className="pl-10 text-white/90">return (</div>
@@ -283,12 +278,11 @@ export default function Home({ jump = "home" }) {
           </div>
         </section>
 
-        {/* ABOUT */}
+        {/* ABOUT SECTION */}
         <section id="about" className="scroll-mt-28">
-          {/* ✅ 1 col on small, 2 col on lg */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* LEFT */}
-            <div className="w-full max-w-none space-y-6">
+            <div className="space-y-6">
               <div className="inline-flex items-center gap-2">
                 <div className="h-5 w-5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 animate-pulse" />
                 <h2 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
@@ -296,64 +290,54 @@ export default function Home({ jump = "home" }) {
                 </h2>
               </div>
 
-              {/* ✅ Responsive text size so it doesn’t look “squeezed” */}
-              <div className="space-y-4 text-base sm:text-lg md:text-xl leading-relaxed text-zinc-800">
+              <div className="space-y-4 text-lg md:text-xl leading-relaxed text-zinc-800">
                 <p>
-                  Hey, I’m{" "}
+                  Hey, I'm{" "}
                   <span className="font-extrabold text-indigo-700">
                     Rishika Shivanna
                   </span>{" "}
-                  — a developer who gets obsessed with clean UI, strong
-                  architecture, and measurable impact.
+                  — a developer who gets obsessed with clean UI, strong architecture,
+                  and measurable impact.
                 </p>
 
                 <p>
-                  I’ve worked across{" "}
-                  <span className="font-semibold text-indigo-700">
-                    Full-Stack development
-                  </span>
-                  ,{" "}
-                  <span className="font-semibold text-purple-700">AI / ML</span>,
-                  and{" "}
-                  <span className="font-semibold text-pink-700">
-                    systems programming
-                  </span>
-                  , with hands-on experience in React, Node.js, Python, SQL, cloud
-                  platforms (AWS/GCP), and data-driven ML pipelines.
+                  I've worked across{" "}
+                  <span className="font-semibold text-indigo-700">Full-Stack development</span>,{" "}
+                  <span className="font-semibold text-purple-700">AI / ML</span>, and{" "}
+                  <span className="font-semibold text-pink-700">systems programming</span>, with
+                  hands-on experience in React, Node.js, Python, SQL, cloud platforms (AWS/GCP),
+                  and data-driven ML pipelines.
                 </p>
 
                 <p>
                   My work ranges from optimizing healthcare platforms with{" "}
-                  <span className="font-semibold">RBAC</span> and database tuning,
-                  to building OCR-enabled mobile applications, predictive ML
-                  models, and performance-optimized web systems.
+                  <span className="font-semibold">RBAC</span> and database tuning, to building
+                  OCR-enabled mobile applications, predictive ML models, and
+                  performance-optimized web systems.
                 </p>
 
                 <p>
-                  I’m actively seeking{" "}
-                  <span className="font-semibold">
-                    Software Engineering / Full-Stack roles
-                  </span>{" "}
-                  where I can contribute strong engineering fundamentals, clean
-                  architecture, and measurable results while growing within
-                  high-impact, collaborative teams.
+                  I'm actively seeking{" "}
+                  <span className="font-semibold">Software Engineering / Full-Stack roles</span>{" "}
+                  where I can contribute strong engineering fundamentals, clean architecture,
+                  and measurable results while growing within high-impact, collaborative teams.
                 </p>
               </div>
             </div>
 
-            {/* RIGHT */}
-            <div className="relative w-full">
+            {/* RIGHT - Image card */}
+            <div className="relative">
               <div className="absolute -top-3 -right-3 z-10">
                 <div className="rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-extrabold px-3 py-1.5 shadow-lg">
                   RISHIKA
                 </div>
               </div>
 
-              <div className="relative rounded-2xl overflow-hidden border-2 border-white shadow-2xl">
+              <div className="relative rounded-2xl overflow-hidden border-2 border-white shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
                 <img
                   src={profileImg}
                   alt="Rishika Shivanna"
-                  className="w-full h-72 sm:h-96 lg:h-[420px] object-cover"
+                  className="w-full h-[420px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 via-transparent to-transparent" />
               </div>
@@ -399,8 +383,9 @@ export default function Home({ jump = "home" }) {
           />
         </Section>
 
-        <Footer />
       </div>
+
+      <Footer />
     </div>
   );
 }
