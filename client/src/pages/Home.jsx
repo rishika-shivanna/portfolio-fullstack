@@ -82,7 +82,7 @@ export default function Home({ jump = "home" }) {
     linkedin: "https://www.linkedin.com/in/rishika-shivanna/",
     github: "https://github.com/rishika-shivanna",
     resume:
-      "https://drive.google.com/file/d/1Xoot3m8iPmHdqduX4sTeD_hkwPoKu9OH/view?usp=drive_link",
+      "https://drive.google.com/file/d/1aLJ__57nCBCHP6bwRNzWvibZjnL0JqzW/view?usp=drive_link",
   };
 
   const statusLines = useMemo(
