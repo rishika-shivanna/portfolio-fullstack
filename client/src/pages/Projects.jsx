@@ -24,7 +24,9 @@ function ProjectCard({ project }) {
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-lg bg-gradient-to-br ${color} bg-opacity-10`}>
+          <div
+            className={`p-2 rounded-lg bg-gradient-to-br ${color} bg-opacity-10`}
+          >
             {project.icon}
           </div>
 
@@ -85,10 +87,13 @@ function ProjectCard({ project }) {
         </div>
 
         <pre className="text-xs text-gray-300 whitespace-pre-wrap">
-{`const project = {
+          {`const project = {
   name: '${project.name}',
   tools: [
-    ${project.tools.slice(0, 4).map((t) => `'${t}'`).join(",\n    ")}
+    ${project.tools
+      .slice(0, 4)
+      .map((t) => `'${t}'`)
+      .join(",\n    ")}
   ],
   description: '${project.description}'
 };`}
@@ -101,6 +106,21 @@ function ProjectCard({ project }) {
 export default function Projects() {
   const projects = useMemo(
     () => [
+      {
+        name: "SkillPath Job Navigator",
+        year: "2026",
+        status: "Active",
+        icon: <Cpu className="h-4 w-4 text-green-600" />,
+        tools: [
+          "FastAPI",
+          "PostgreSQL",
+          "React",
+          "Job APIs",
+          "Similarity Scoring",
+        ],
+        description:
+          "AI-powered job matching app that ranks jobs by skill similarity and generates a personalized skill-gap roadmap using real job listings.",
+      },
       {
         name: "Personal Portfolio Website",
         year: "2025",
@@ -141,7 +161,7 @@ export default function Projects() {
           "Multi-agent system that analyzes shopping receipts for carbon footprint estimation and sustainability insights.",
       },
     ],
-    []
+    [],
   );
 
   return (

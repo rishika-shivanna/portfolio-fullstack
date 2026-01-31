@@ -98,7 +98,9 @@ function CodeWindow({ exp }) {
 
             {exp.bullets?.length ? (
               <div className="mt-2">
-                <span className="ml-4 md:ml-6 mr-2 text-white">highlights:</span>
+                <span className="ml-4 md:ml-6 mr-2 text-white">
+                  highlights:
+                </span>
                 <span className="text-white/60">{"["}</span>
 
                 <div className="mt-2 space-y-1">
@@ -147,6 +149,29 @@ function CodeWindow({ exp }) {
 export default function Experience() {
   const experiences = useMemo(
     () => [
+      {
+        id: 0,
+        title: "Senior Research Assistant",
+        company: "SUNY Research Foundation",
+        location: "Binghamton, NY",
+        duration: "Jan 2026 — Present",
+        tools: [
+          "PostgreSQL",
+          "Python ETL",
+          "Metabase",
+          "Brightspace",
+          "Panopto",
+        ],
+        summary:
+          "Built ETL + analytics systems for continuing-education programs powering 15+ courses and 500+ students.",
+        bullets: [
+          "Automated data ingestion/migration using Python ETL + PostgreSQL, reducing manual processing by 70%.",
+          "Built real-time dashboards in Metabase for program analytics across 15+ courses and 500+ students.",
+          "Maintained Brightspace + Panopto workflows used by instructors across 10+ engineering departments.",
+        ],
+        metrics: ["70% less manual work", "15+ courses", "500+ students"],
+        logo: "/exp/suny.png",
+      },
       {
         id: 1,
         title: "Junior Software Developer",
@@ -200,20 +225,20 @@ export default function Experience() {
         logo: "/exp/iisc.png",
       },
     ],
-    []
+    [],
   );
 
   return (
     <div className="relative">
       {/* ✅ ONLY the label stays sticky */}
       <div className="mb-8">
-  <div className="flex items-center gap-4">
-    <span className="bg-[#2F2F2F] text-white px-6 py-3 text-sm md:text-base font-semibold rounded-xl shadow-sm">
-      EXPERIENCE
-    </span>
-    <span className="w-full h-[2px] bg-gradient-to-r from-pink-500 via-violet-600 to-transparent" />
-  </div>
-</div>
+        <div className="flex items-center gap-4">
+          <span className="bg-[#2F2F2F] text-white px-6 py-3 text-sm md:text-base font-semibold rounded-xl shadow-sm">
+            EXPERIENCE
+          </span>
+          <span className="w-full h-[2px] bg-gradient-to-r from-pink-500 via-violet-600 to-transparent" />
+        </div>
+      </div>
 
       {/* ✅ cards stack and stick */}
       <div className="pt-8 space-y-8">

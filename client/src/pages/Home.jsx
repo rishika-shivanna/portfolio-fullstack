@@ -81,7 +81,8 @@ export default function Home({ jump = "home" }) {
     email: "mailto:rshivanna@binghamton.edu",
     linkedin: "https://www.linkedin.com/in/rishika-shivanna/",
     github: "https://github.com/rishika-shivanna",
-    resume: "https://drive.google.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing",
+    resume:
+      "https://drive.gohttps://drive.google.com/file/d/1Xoot3m8iPmHdqduX4sTeD_hkwPoKu9OH/view?usp=sharingogle.com/file/d/1d60ctfGQpKWvjoGiE2UQb4FsG1B5jdSR/view?usp=sharing",
   };
 
   const statusLines = useMemo(
@@ -91,7 +92,7 @@ export default function Home({ jump = "home" }) {
       "Performance • Security • UI polish",
       "Let's build something great",
     ],
-    []
+    [],
   );
 
   const { text, cursor } = useTypewriter(statusLines, 20, 1100);
@@ -115,7 +116,6 @@ export default function Home({ jump = "home" }) {
       <Navbar />
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-10 space-y-10 pb-16 pt-24">
-
         {/* HERO SECTION - Already defined in this component */}
         <section id="home" className="scroll-mt-28">
           <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-center">
@@ -131,8 +131,7 @@ export default function Home({ jump = "home" }) {
 
               {/* Heading */}
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-zinc-900">
-                Hey there, <br />
-                I am{" "}
+                Hey there, <br />I am{" "}
                 <span className="bg-gradient-to-r from-indigo-700 via-purple-700 to-indigo-700 bg-clip-text text-transparent">
                   RISHIKA SHIVANNA.
                 </span>
@@ -208,7 +207,7 @@ export default function Home({ jump = "home" }) {
                         <span
                           className={cn(
                             "ml-1 inline-block w-2",
-                            cursor ? "opacity-100" : "opacity-0"
+                            cursor ? "opacity-100" : "opacity-0",
                           )}
                         >
                           |
@@ -230,7 +229,9 @@ export default function Home({ jump = "home" }) {
                   <span className="h-3 w-3 rounded-full bg-red-400" />
                   <span className="h-3 w-3 rounded-full bg-yellow-400" />
                   <span className="h-3 w-3 rounded-full bg-green-400" />
-                  <div className="ml-auto text-xs text-white/60 font-mono">coder.ts</div>
+                  <div className="ml-auto text-xs text-white/60 font-mono">
+                    coder.ts
+                  </div>
                 </div>
 
                 <div className="p-5 md:p-6 space-y-2 text-[14px] leading-relaxed font-mono">
@@ -239,7 +240,8 @@ export default function Home({ jump = "home" }) {
                   </div>
 
                   <div className="pl-5 text-white/90">
-                    name: <span className="text-yellow-300">'Rishika Shivanna'</span>,
+                    name:{" "}
+                    <span className="text-yellow-300">'Rishika Shivanna'</span>,
                   </div>
                   <div className="pl-5 text-white/90">
                     skills:{" "}
@@ -252,19 +254,24 @@ export default function Home({ jump = "home" }) {
                     hardWorker: <span className="text-emerald-300">true</span>,
                   </div>
                   <div className="pl-5 text-white/90">
-                    quickLearner: <span className="text-emerald-300">true</span>,
+                    quickLearner: <span className="text-emerald-300">true</span>
+                    ,
                   </div>
                   <div className="pl-5 text-white/90">
-                    problemSolver: <span className="text-emerald-300">true</span>,
+                    problemSolver:{" "}
+                    <span className="text-emerald-300">true</span>,
                   </div>
 
                   <div className="pl-5 text-white/90">
-                    hireable: <span className="text-indigo-300">function</span>() {"{"}
+                    hireable: <span className="text-indigo-300">function</span>
+                    () {"{"}
                   </div>
 
                   <div className="pl-10 text-white/90">return (</div>
                   <div className="pl-14 text-cyan-300">this.hardWorker &&</div>
-                  <div className="pl-14 text-cyan-300">this.problemSolver &&</div>
+                  <div className="pl-14 text-cyan-300">
+                    this.problemSolver &&
+                  </div>
                   <div className="pl-14 text-cyan-300">
                     this.skills.length &gt;= 5
                   </div>
@@ -296,31 +303,40 @@ export default function Home({ jump = "home" }) {
                   <span className="font-extrabold text-indigo-700">
                     Rishika Shivanna
                   </span>{" "}
-                  — a developer who gets obsessed with clean UI, strong architecture,
-                  and measurable impact.
+                  — a developer who gets obsessed with clean UI, strong
+                  architecture, and measurable impact.
                 </p>
 
                 <p>
                   I've worked across{" "}
-                  <span className="font-semibold text-indigo-700">Full-Stack development</span>,{" "}
-                  <span className="font-semibold text-purple-700">AIML</span>, and{" "}
-                  <span className="font-semibold text-pink-700">Cloud and Mobile apps</span>, with
-                  hands-on experience in React, Node.js, Python, SQL, cloud platforms (AWS/GCP), Flutter
-                  and data-driven ML pipelines.
+                  <span className="font-semibold text-indigo-700">
+                    Full-Stack development
+                  </span>
+                  , <span className="font-semibold text-purple-700">AIML</span>,
+                  and{" "}
+                  <span className="font-semibold text-pink-700">
+                    Cloud and Mobile apps
+                  </span>
+                  , with hands-on experience in React, Node.js, Python, SQL,
+                  cloud platforms (AWS/GCP), Flutter and data-driven ML
+                  pipelines.
                 </p>
 
                 <p>
                   My work ranges from optimizing healthcare platforms with{" "}
-                  <span className="font-semibold">RBAC</span> and database tuning, to building
-                  OCR-enabled mobile applications, predictive ML models, and
-                  performance-optimized web systems.
+                  <span className="font-semibold">RBAC</span> and database
+                  tuning, to building OCR-enabled mobile applications,
+                  predictive ML models, and performance-optimized web systems.
                 </p>
 
                 <p>
                   I'm actively seeking{" "}
-                  <span className="font-semibold">Software Engineering / Full-Stack roles</span>{" "}
-                  where I can contribute strong engineering fundamentals, clean architecture,
-                  and measurable results while growing within high-impact, collaborative teams.
+                  <span className="font-semibold">
+                    Software Engineering / Full-Stack roles
+                  </span>{" "}
+                  where I can contribute strong engineering fundamentals, clean
+                  architecture, and measurable results while growing within
+                  high-impact, collaborative teams.
                 </p>
               </div>
             </div>
@@ -355,7 +371,11 @@ export default function Home({ jump = "home" }) {
         </Section>
 
         {/* SKILLS */}
-        <Section id="skills" title="Skills" subtitle="Tools I use to build & ship.">
+        <Section
+          id="skills"
+          title="Skills"
+          subtitle="Tools I use to build & ship."
+        >
           <SkillsMarquee />
         </Section>
 
@@ -369,12 +389,20 @@ export default function Home({ jump = "home" }) {
         </Section>
 
         {/* EDUCATION */}
-        <Section id="education" title="Education" subtitle="Degrees + highlights.">
+        <Section
+          id="education"
+          title="Education"
+          subtitle="Degrees + highlights."
+        >
           <Education />
         </Section>
 
         {/* CONTACT */}
-        <Section id="contact" title="Contact" subtitle="Short, clean, and professional.">
+        <Section
+          id="contact"
+          title="Contact"
+          subtitle="Short, clean, and professional."
+        >
           <ContactCards
             email="rshivanna@binghamton.edu"
             linkedin="https://www.linkedin.com/in/rishika-shivanna/"
@@ -382,7 +410,6 @@ export default function Home({ jump = "home" }) {
             resumeUrl={LINKS.resume}
           />
         </Section>
-
       </div>
 
       <Footer />

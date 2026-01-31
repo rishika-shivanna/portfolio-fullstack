@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import Lottie from "lottie-react";
 import studyAnim from "../assets/lottie/study.json";
-<Lottie animationData={studyAnim} loop />
+<Lottie animationData={studyAnim} loop />;
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,7 +20,7 @@ function EducationBlock({ item, accent = "emerald" }) {
       className={cn(
         "w-full rounded-2xl overflow-hidden",
         "shadow-[0_14px_50px_-30px_rgba(0,0,0,0.55)]",
-        "bg-gradient-to-br from-zinc-900 via-zinc-900 to-[#2b1e5a]"
+        "bg-gradient-to-br from-zinc-900 via-zinc-900 to-[#2b1e5a]",
       )}
     >
       {/* top sheen */}
@@ -38,7 +38,7 @@ function EducationBlock({ item, accent = "emerald" }) {
             <div
               className={cn(
                 "text-lg md:text-xl font-extrabold uppercase tracking-wide",
-                accentMap[accent] || "text-emerald-400"
+                accentMap[accent] || "text-emerald-400",
               )}
             >
               {item.level} DEGREE
@@ -51,8 +51,6 @@ function EducationBlock({ item, accent = "emerald" }) {
             <div className="text-white/60 text-xs md:text-sm">
               {item.location}
             </div>
-
-            
 
             {item.note ? (
               <div className="text-white/70 text-xs md:text-sm leading-relaxed max-w-[48ch]">
@@ -84,7 +82,6 @@ function EducationBlock({ item, accent = "emerald" }) {
   );
 }
 
-
 export default function Education() {
   const degrees = useMemo(
     () => [
@@ -105,7 +102,7 @@ export default function Education() {
         logo: "/logos/gat.jpeg",
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -116,7 +113,6 @@ export default function Education() {
         <div className="flex justify-center lg:justify-start">
           <div className="w-full max-w-[420px]">
             <Lottie animationData={studyAnim} loop />
-
           </div>
         </div>
 
