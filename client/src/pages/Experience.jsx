@@ -151,6 +151,35 @@ export default function Experience() {
     () => [
       {
         id: 0,
+        title: "Software Engineer Intern",
+        company: "University of Michigan – ITS (WADS)",
+        location: "Ann Arbor, MI",
+        duration: "May 2026 — Present",
+        tools: [
+          "PostgreSQL",
+          "SQL",
+          "Ruby on Rails",
+          "EXPLAIN ANALYZE",
+          "Backend Development",
+          "Performance Optimization",
+        ],
+        summary:
+          "Optimized backend search performance for the U-M Biorepository Web Portal containing 2.5M+ biodiversity and museum records.",
+        bullets: [
+          "Optimized PostgreSQL indexing, query tuning, and execution plans using EXPLAIN ANALYZE for a platform containing 2.5M+ records.",
+          "Reduced average search query response time through SQL optimization, index refinement, and backend performance tuning.",
+          "Improved scalability and data retrieval efficiency in a Ruby on Rails + PostgreSQL environment supporting researchers and public health professionals.",
+          "Benchmarked latency improvements and documented scalability metrics for future backend optimization initiatives.",
+        ],
+        metrics: [
+          "2.5M+ records",
+          "Faster query response",
+          "Improved scalability",
+        ],
+        logo: "/exp/umich.png",
+      },
+      {
+        id: 1,
         title: "Senior Research Assistant",
         company: "SUNY Research Foundation",
         location: "Binghamton, NY",
@@ -173,7 +202,7 @@ export default function Experience() {
         logo: "/exp/suny.png",
       },
       {
-        id: 1,
+        id: 2,
         title: "Junior Software Developer",
         company: "Maitra Medtech (IISc)",
         location: "India",
@@ -189,7 +218,7 @@ export default function Experience() {
         logo: "/exp/maitra.jpeg",
       },
       {
-        id: 2,
+        id: 3,
         title: "Software Developer Intern",
         company: "Aarnaq MedTech Pvt Ltd (IISc)",
         location: "India",
@@ -207,7 +236,7 @@ export default function Experience() {
         logo: "/exp/iisc.png",
       },
       {
-        id: 3,
+        id: 4,
         title: "UI/UX Designer Intern",
         company: "NeuraStim Smartphone (IISc Collaboration)",
         location: "Delaware, USA / IISc",
