@@ -204,7 +204,7 @@ export default function Experience() {
           "20% less manual tracking",
         ],
 
-        logo: "/exp/buzzhive.png",
+        logo: "/exp/buzzhive.jpeg",
       },
       {
         id: 2,
