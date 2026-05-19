@@ -180,10 +180,38 @@ export default function Experience() {
       },
       {
         id: 1,
+        title: "Software Engineer Intern",
+        company: "BuzzHive",
+        location: "Binghamton, NY",
+        duration: "Mar 2026 — Apr 2026",
+        tools: [
+          "React",
+          "REST APIs",
+          "IoT Analytics",
+          "Frontend Development",
+          "Dashboard Development",
+        ],
+        summary:
+          "Developed real-time IoT analytics dashboards for monitoring hive sensor data and operational workflows.",
+        bullets: [
+          "Built modular React dashboards visualizing real-time hive temperature, humidity, and activity data for 5+ stakeholders.",
+          "Integrated 6+ REST APIs into a scalable frontend architecture reducing feature development time by 30%.",
+          "Improved real-time monitoring workflows, reducing manual tracking efforts by 20%.",
+        ],
+        metrics: [
+          "6+ APIs integrated",
+          "30% faster development",
+          "20% less manual tracking",
+        ],
+
+        logo: "/exp/buzzhive.png",
+      },
+      {
+        id: 2,
         title: "Senior Research Assistant",
         company: "SUNY Research Foundation",
         location: "Binghamton, NY",
-        duration: "Jan 2026 — Present",
+        duration: "Jan 2026 — May 2026",
         tools: [
           "PostgreSQL",
           "Python ETL",
@@ -202,7 +230,7 @@ export default function Experience() {
         logo: "/exp/suny.png",
       },
       {
-        id: 2,
+        id: 3,
         title: "Junior Software Developer",
         company: "Maitra Medtech (IISc)",
         location: "India",
@@ -218,7 +246,7 @@ export default function Experience() {
         logo: "/exp/maitra.jpeg",
       },
       {
-        id: 3,
+        id: 4,
         title: "Software Developer Intern",
         company: "Aarnaq MedTech Pvt Ltd (IISc)",
         location: "India",
@@ -236,7 +264,7 @@ export default function Experience() {
         logo: "/exp/iisc.png",
       },
       {
-        id: 4,
+        id: 5,
         title: "UI/UX Designer Intern",
         company: "NeuraStim Smartphone (IISc Collaboration)",
         location: "Delaware, USA / IISc",
