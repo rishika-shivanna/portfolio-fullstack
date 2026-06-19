@@ -160,12 +160,13 @@ function ContactCard({
   );
 }
 
-export default function ContactCards({
-  email = "rishikashivanna01@gmail.com",
-  linkedin = "https://www.linkedin.com/in/rishika-shivanna/",
-  github = "https://github.com/rishika-shivanna",
-  resumeUrl = "https://drive.google.com/file/d/1iqARVbSs_88NQKpNUXEsD3rM5yGvsqBC/view?usp=sharing",
-}) {
+export default function ContactCards() {
+  const email = "rishikashivanna01@gmail.com";
+  const linkedin = "https://www.linkedin.com/in/rishika-shivanna/";
+  const github = "https://github.com/rishika-shivanna";
+  const resumeUrl =
+    "https://drive.google.com/file/d/1iqARVbSs_88NQKpNUXEsD3rM5yGvsqBC/view?usp=sharing";
+
   const fileId = extractDriveFileId(resumeUrl);
 
   return (
