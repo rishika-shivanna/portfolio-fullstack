@@ -87,7 +87,7 @@ export default function Education() {
     () => [
       {
         id: 1,
-        years: "Jan 2025 — Dec 2026",
+        years: "Jan 2025 — Aug 2026",
         level: "MASTERS",
         school: "SUNY Binghamton University",
         location: "Binghamton, NY, United States",
