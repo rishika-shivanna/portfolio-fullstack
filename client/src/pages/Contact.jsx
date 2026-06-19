@@ -216,16 +216,6 @@ export default function ContactCards() {
       >
         <div className="flex flex-wrap gap-3">
           <a
-            href={driveViewUrl(fileId)}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
-          >
-            <FileText className="h-4 w-4" />
-            Open in Drive
-          </a>
-
-          <a
             href={driveDownloadUrl(fileId)}
             className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
           >
