@@ -5,7 +5,7 @@ function cn(...classes) {
 }
 
 /**
- * Neha-style code window (dark code area, colorful top gradient, mac dots)
+ * Code-style experience window
  */
 function CodeWindow({ exp }) {
   return (
@@ -151,135 +151,144 @@ export default function Experience() {
     () => [
       {
         id: 0,
-        title: "Software Engineer Intern",
-        company: "University of Michigan – ITS (WADS)",
-        location: "Ann Arbor, MI",
-        duration: "May 2026 — Present",
+        title: "Software Engineer",
+        company: "PNC Financial Services",
+        location: "USA",
+        duration: "Jan 2026 — Present",
+        type: "Full-time",
         tools: [
+          "Java 21",
+          "Spring Boot",
+          "Kafka",
           "PostgreSQL",
-          "SQL",
-          "Ruby on Rails",
-          "EXPLAIN ANALYZE",
-          "Backend Development",
-          "Performance Optimization",
+          "Redis",
+          "AWS",
+          "OpenAI APIs",
+          "Anthropic Claude",
+          "RAG",
+          "LangChain",
+          "Docker",
+          "Kubernetes",
+          "Terraform",
+          "GitHub Actions",
+          "Jenkins",
+          "OpenTelemetry",
+          "CloudWatch",
         ],
         summary:
-          "Optimized backend search performance for the U-M Biorepository Web Portal containing 2.5M+ biodiversity and museum records.",
+          "Architecting secure, cloud-native banking platforms and AI-powered customer support systems handling millions of customer requests and financial events.",
         bullets: [
-          "Optimized PostgreSQL indexing, query tuning, and execution plans using EXPLAIN ANALYZE for a platform containing 2.5M+ records.",
-          "Reduced average search query response time through SQL optimization, index refinement, and backend performance tuning.",
-          "Improved scalability and data retrieval efficiency in a Ruby on Rails + PostgreSQL environment supporting researchers and public health professionals.",
-          "Benchmarked latency improvements and documented scalability metrics for future backend optimization initiatives.",
+          "Architected cloud-native banking platforms using Java 21, Spring Boot, Kafka, PostgreSQL, Redis, and AWS, supporting more than 8 million customer requests every month.",
+          "Led design and implementation of distributed event-driven services using Apache Kafka, asynchronous messaging, and resilient microservice patterns to process over 25 million financial events per month.",
+          "Built enterprise AI solutions using OpenAI APIs, Anthropic Claude, Retrieval-Augmented Generation, LangChain, and Vector Embeddings to improve customer support and internal knowledge retrieval.",
+          "Designed secure REST and GraphQL APIs for authentication, fraud detection, payment processing, and customer profile services while following regulatory and financial compliance standards.",
+          "Optimized platform scalability using Redis caching, PostgreSQL query optimization, Docker, Kubernetes, Terraform, GitHub Actions, and Jenkins, reducing average API response time to under 120 milliseconds.",
+          "Established observability using OpenTelemetry, AWS CloudWatch, centralized logging, and monitoring dashboards to identify production issues within 5 minutes.",
+          "Partnered with solution architects, AI engineers, product managers, and cybersecurity teams to lead system design reviews, mentor engineers, and deliver secure enterprise software.",
         ],
         metrics: [
-          "2.5M+ records",
-          "Faster query response",
-          "Improved scalability",
+          "8M+ monthly requests",
+          "25M+ financial events/month",
+          "<120ms API response time",
+          "Issues detected within 5 minutes",
         ],
-        logo: "/exp/umich.png",
+        logo: "/exp/pnc.png",
       },
       {
         id: 1,
-        title: "Software Engineer Intern",
-        company: "BuzzHive",
+        title: "Senior Research Assistant",
+        company: "The Research Foundation for SUNY",
         location: "Binghamton, NY",
-        duration: "Mar 2026 — Apr 2026",
+        duration: "Jan 2025 — Dec 2025",
+        type: "Research / Software Engineering",
         tools: [
+          "Python",
+          "Java",
+          "FastAPI",
           "React",
+          "PostgreSQL",
+          "Spring Boot",
           "REST APIs",
-          "IoT Analytics",
-          "Frontend Development",
-          "Dashboard Development",
+          "Docker",
+          "Kubernetes",
+          "Azure",
+          "AWS",
+          "OpenAI APIs",
+          "Anthropic Claude",
+          "LangChain",
+          "Vector Databases",
+          "MLflow",
+          "GitHub Actions",
+          "Scikit-learn",
+          "MLOps",
         ],
         summary:
-          "Developed real-time IoT analytics dashboards for monitoring hive sensor data and operational workflows.",
+          "Designed and built AI, data, and cloud-native systems for large-scale academic research workflows across structured and unstructured datasets.",
         bullets: [
-          "Built modular React dashboards visualizing real-time hive temperature, humidity, and activity data for 5+ stakeholders.",
-          "Integrated 6+ REST APIs into a scalable frontend architecture reducing feature development time by 30%.",
-          "Improved real-time monitoring workflows, reducing manual tracking efforts by 20%.",
+          "Designed software platforms using Python, Java, FastAPI, React, PostgreSQL, and cloud-native architectures, enabling researchers to securely process and analyze more than 12 TB of research data.",
+          "Developed end-to-end machine learning pipelines using Python, PyTorch, TensorFlow, Scikit-learn, and MLOps practices to automate preprocessing, feature engineering, training, and evaluation.",
+          "Engineered Retrieval-Augmented Generation applications using LangChain, OpenAI APIs, Anthropic Claude, Vector Embeddings, and Vector Databases to improve semantic search across more than 1 million research documents.",
+          "Built scalable backend services using Spring Boot, REST APIs, Docker, Kubernetes, Azure, and AWS, integrating AI inference services with university applications and reducing reporting workflows by more than 200 faculty and research hours.",
+          "Implemented experiment tracking, model versioning, and automated deployment workflows using MLflow, GitHub Actions, and containerized infrastructure.",
+          "Collaborated with faculty members, graduate researchers, and software engineering teams to translate research objectives into production-ready software systems.",
         ],
         metrics: [
-          "6+ APIs integrated",
-          "30% faster development",
-          "20% less manual tracking",
+          "12TB+ research data",
+          "1M+ research documents",
+          "200+ hours saved",
+          "Reusable AI frameworks",
         ],
-
-        logo: "/exp/buzzhive.jpeg",
-      },
-      {
-        id: 2,
-        title: "Senior Research Assistant",
-        company: "SUNY Research Foundation",
-        location: "Binghamton, NY",
-        duration: "Jan 2026 — May 2026",
-        tools: [
-          "PostgreSQL",
-          "Python ETL",
-          "Metabase",
-          "Brightspace",
-          "Panopto",
-        ],
-        summary:
-          "Built ETL + analytics systems for continuing-education programs powering 15+ courses and 500+ students.",
-        bullets: [
-          "Automated data ingestion/migration using Python ETL + PostgreSQL, reducing manual processing by 70%.",
-          "Built real-time dashboards in Metabase for program analytics across 15+ courses and 500+ students.",
-          "Maintained Brightspace + Panopto workflows used by instructors across 10+ engineering departments.",
-        ],
-        metrics: ["70% less manual work", "15+ courses", "500+ students"],
         logo: "/exp/suny.png",
       },
       {
-        id: 3,
-        title: "Junior Software Developer",
-        company: "Maitra Medtech (IISc)",
+        id: 2,
+        title: "Software Developer",
+        company: "Flipkart",
         location: "India",
-        duration: "Aug 2024 — Dec 2024",
-        tools: ["RBAC", "REST APIs", "SQL", "Performance Tuning"],
-        summary:
-          "Strengthened platform security and improved backend performance for a healthcare web application.",
-        bullets: [
-          "Implemented RBAC and refactored API endpoints with backend engineers.",
-          "Optimized DB queries with focused SELECTs + indexing, cutting response time by ~200ms.",
+        duration: "Jul 2022 — Dec 2024",
+        type: "Full-time",
+        tools: [
+          "Java",
+          "Spring Boot",
+          "REST APIs",
+          "MySQL",
+          "MongoDB",
+          "Apache Kafka",
+          "C++",
+          "Multithreading",
+          "STL",
+          "React",
+          "TypeScript",
+          "Redux",
+          "HTML5",
+          "CSS3",
+          "JavaScript",
+          "Redis",
+          "AWS",
+          "Docker",
+          "Kubernetes",
+          "Jenkins",
+          "GitHub Actions",
+          "Git",
         ],
-        metrics: ["~200ms faster responses", "RBAC security upgrade"],
-        logo: "/exp/maitra.jpeg",
-      },
-      {
-        id: 4,
-        title: "Software Developer Intern",
-        company: "Aarnaq MedTech Pvt Ltd (IISc)",
-        location: "India",
-        duration: "Apr 2023 — Jul 2024",
-        type: "Internship",
-        tools: ["Mobile App", "OCR", "Firebase", "Dashboards", "BRDs", "UML"],
         summary:
-          "Built automation + analytics for real workflows—reduced task time and reporting load.",
+          "Developed high-scale backend services, event-driven systems, and responsive web applications for e-commerce marketplace operations.",
         bullets: [
-          "Integrated camera + OCR to reduce reporting time from ~15 minutes to <5 minutes.",
-          "Built dashboards reducing reporting requests from 50/week to 30/week.",
-          "Standardized pipelines cutting ad-hoc DB queries from 40/day to 15/day.",
+          "Developed scalable backend services using Java, Spring Boot, REST APIs, MySQL, and MongoDB to support order management, inventory synchronization, and seller operations across high-availability e-commerce platforms.",
+          "Implemented event-driven microservices with Apache Kafka to asynchronously process order creation, inventory updates, shipment notifications, and payment events during high-volume sales campaigns.",
+          "Engineered high-performance modules using C++, multithreading, and STL containers to optimize compute-intensive business operations, reducing batch processing time by nearly 18 minutes for large product catalog synchronization jobs.",
+          "Built responsive web applications using ReactJS, TypeScript, Redux, HTML5, CSS3, and JavaScript, improving seller productivity across catalog management, pricing, inventory updates, and order tracking workflows.",
+          "Designed and integrated secure RESTful APIs connecting payment gateways, logistics providers, warehouse management systems, and internal business services.",
+          "Optimized application performance using Redis caching, SQL query optimization, database indexing, MySQL, and MongoDB, reducing average API response time by approximately 120 milliseconds during peak shopping events.",
+          "Automated application delivery using AWS, Docker, Kubernetes, Jenkins, GitHub Actions, and Git, enabling standardized CI/CD pipelines for weekly production releases.",
         ],
-        metrics: ["15 min → <5 min", "50→30 reports/week", "40→15 queries/day"],
-        logo: "/exp/iisc.png",
-      },
-      {
-        id: 5,
-        title: "UI/UX Designer Intern",
-        company: "NeuraStim Smartphone (IISc Collaboration)",
-        location: "Delaware, USA / IISc",
-        duration: "Aug 2023 — Nov 2023",
-        type: "Internship",
-        tools: ["Figma", "Design Systems", "Event Logging", "WCAG 2.1 AA"],
-        summary:
-          "Designed user flows for a neuro-health app and partnered with engineers to ship accessible UI.",
-        bullets: [
-          "Built 6 Figma prototypes; tested with 20 users (52s → 35s task time).",
-          "Added event logging and reduced iteration cycles from 4 days to 3 days.",
-          "Ensured WCAG 2.1 AA compliance across devices.",
+        metrics: [
+          "10M+ order events",
+          "18 min faster batch processing",
+          "120ms faster APIs",
+          "Weekly production releases",
         ],
-        metrics: ["52s → 35s", "4d → 3d cycles", "WCAG 2.1 AA"],
-        logo: "/exp/iisc.png",
+        logo: "/exp/flipkart.png",
       },
     ],
     [],
@@ -287,7 +296,6 @@ export default function Experience() {
 
   return (
     <div className="relative">
-      {/* ✅ ONLY the label stays sticky */}
       <div className="mb-8">
         <div className="flex items-center gap-4">
           <span className="bg-[#2F2F2F] text-white px-6 py-3 text-sm md:text-base font-semibold rounded-xl shadow-sm">
@@ -297,14 +305,13 @@ export default function Experience() {
         </div>
       </div>
 
-      {/* ✅ cards stack and stick */}
       <div className="pt-8 space-y-8">
         {experiences.map((exp, index) => (
           <div
             key={exp.id}
             className="sticky"
             style={{
-              top: 140 + index * 18, // spacing between stacked sticky cards
+              top: 140 + index * 18,
               zIndex: 10 + index,
             }}
           >
@@ -314,7 +321,6 @@ export default function Experience() {
           </div>
         ))}
 
-        {/* spacer so last card can scroll out cleanly */}
         <div className="h-[220px]" />
       </div>
     </div>
