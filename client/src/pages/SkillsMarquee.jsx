@@ -77,13 +77,15 @@ function SkillTile({ name, icon }) {
         "shadow-[0_12px_40px_-28px_rgba(0,0,0,0.55)]",
         "border border-white/10",
         "flex flex-col items-center justify-center gap-3",
-        "transition hover:-translate-y-0.5 hover:shadow-[0_18px_60px_-34px_rgba(0,0,0,0.65)]"
+        "transition-all duration-300 ease-out",
+        "hover:-translate-y-1.5 hover:scale-[1.03] hover:border-indigo-400/40",
+        "hover:shadow-[0_20px_50px_-20px_rgba(99,102,241,0.45)]"
       )}
     >
       <img
         src={icon}
         alt={name}
-        className="h-12 w-12 object-contain"
+        className="h-12 w-12 object-contain transition-transform duration-300"
         loading="lazy"
         onError={(e) => {
           e.currentTarget.style.display = "none";

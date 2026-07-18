@@ -1,28 +1,9 @@
 import { useState } from "react";
-import {
-  Mail,
-  Linkedin,
-  Github,
-  Download,
-  Copy,
-  Check,
-  FileText,
-} from "lucide-react";
+import { Mail, Linkedin, Github, Copy, Check } from "lucide-react";
+import Reveal from "../components/Reveal";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
-}
-
-function driveViewUrl(fileId) {
-  return `https://drive.google.com/file/d/${fileId}/view`;
-}
-function driveDownloadUrl(fileId) {
-  return `https://drive.google.com/uc?export=download&id=${fileId}`;
-}
-function extractDriveFileId(url) {
-  if (!url || typeof url !== "string") return "";
-  const m = url.match(/\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
-  return m ? m[1] : "";
 }
 
 function ContactCard({
@@ -124,7 +105,7 @@ function ContactCard({
                 <button
                   type="button"
                   onClick={onCopy}
-                  className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
+                  className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 hover:scale-105 transition"
                 >
                   {copied ? (
                     <Check className="h-4 w-4" />
@@ -147,7 +128,7 @@ function ContactCard({
               target="_blank"
               rel="noreferrer"
               className={cn(
-                "shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-extrabold text-white transition",
+                "shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-extrabold text-white transition hover:scale-105",
                 t.btn,
               )}
             >
@@ -164,66 +145,47 @@ export default function ContactCards() {
   const email = "rishikashivanna01@gmail.com";
   const linkedin = "https://www.linkedin.com/in/rishika-shivanna/";
   const github = "https://github.com/rishika-shivanna";
-  const resumeUrl =
-    "https://drive.google.com/file/d/1iqARVbSs_88NQKpNUXEsD3rM5yGvsqBC/view?usp=sharing";
 
-  const fileId = extractDriveFileId(resumeUrl);
+  const cards = [
+    {
+      tone: "indigo",
+      icon: <Mail />,
+      title: "Email",
+      value: email,
+      hint: "Best way to reach me",
+      actionLabel: "Send",
+      href: `mailto:${email}`,
+      copyValue: email,
+    },
+    {
+      tone: "emerald",
+      icon: <Linkedin />,
+      title: "LinkedIn",
+      value: linkedin.replace(/^https?:\/\//, ""),
+      hint: "Connect & message",
+      actionLabel: "Open",
+      href: linkedin,
+      copyValue: linkedin,
+    },
+    {
+      tone: "violet",
+      icon: <Github />,
+      title: "GitHub",
+      value: github.replace(/^https?:\/\//, ""),
+      hint: "Projects & code",
+      actionLabel: "Open",
+      href: github,
+      copyValue: github,
+    },
+  ];
 
   return (
-    <div className="grid lg:grid-cols-2 gap-6">
-      <ContactCard
-        tone="indigo"
-        icon={<Mail />}
-        title="Email"
-        value={email}
-        hint="Best way to reach me"
-        actionLabel="Send"
-        href={`mailto:${email}`}
-        copyValue={email}
-      />
-
-      <ContactCard
-        tone="emerald"
-        icon={<Linkedin />}
-        title="LinkedIn"
-        value={linkedin.replace(/^https?:\/\//, "")}
-        hint="Connect & message"
-        actionLabel="Open"
-        href={linkedin}
-        copyValue={linkedin}
-      />
-
-      <ContactCard
-        tone="rose"
-        icon={<Github />}
-        title="GitHub"
-        value={github.replace(/^https?:\/\//, "")}
-        hint="Projects & code"
-        actionLabel="Open"
-        href={github}
-        copyValue={github}
-      />
-
-      <ContactCard
-        tone="violet"
-        icon={<FileText />}
-        title="Resume"
-        value="Download PDF"
-        hint="Google Drive"
-        actionLabel="Open"
-        href={driveViewUrl(fileId)}
-        copyValue={driveViewUrl(fileId)}
-      >
-        <div className="flex flex-wrap gap-3">
-          <a
-            href={driveDownloadUrl(fileId)}
-            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 transition"
-          >
-            <Download className="h-4 w-4" />
-            Download PDF
-          </a>
-        </div>
-      </ContactCard>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {cards.map((c, i) => (
+        <Reveal key={c.title} delay={i * 0.08}>
+          <ContactCard {...c} />
+        </Reveal>
+      ))}
     </div>
   );
 }

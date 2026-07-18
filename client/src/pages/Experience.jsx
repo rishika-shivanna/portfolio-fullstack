@@ -1,13 +1,13 @@
-import { useMemo } from "react";
-
-function cn(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 /**
- * Code-style experience window
+ * Code-style experience window. Collapsed, it shows only the header bar
+ * (company + location) — a compact "deck" look. Click it to expand and
+ * read the full role, tools, highlights, and metrics; click again (or
+ * click a different card) to collapse it back down.
  */
-function CodeWindow({ exp }) {
+function CodeWindow({ exp, isActive, onToggle }) {
   return (
     <div className="w-full">
       {/* top gradient line */}
@@ -16,130 +16,166 @@ function CodeWindow({ exp }) {
         <div className="h-[2px] w-1/2 bg-gradient-to-r from-violet-600 to-transparent" />
       </div>
 
-      <div className="rounded-xl border border-zinc-200 bg-[#2F2F2F] shadow-[0_18px_40px_-20px_rgba(0,0,0,0.45)] overflow-hidden">
-        {/* header row */}
-        <div className="flex items-center gap-3 px-4 md:px-6 py-3 border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-red-400" />
-            <span className="h-3 w-3 rounded-full bg-orange-400" />
-            <span className="h-3 w-3 rounded-full bg-emerald-500" />
-          </div>
-
-          <div className="flex items-center gap-2 min-w-0">
-            {exp.logo ? (
-              <img
-                src={exp.logo}
-                alt={`${exp.company} logo`}
-                className="h-8 w-8 rounded-full object-cover border border-white/10"
-                loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            ) : null}
-
-            <div className="min-w-0">
-              <p className="truncate text-sm md:text-base font-semibold text-white">
-                {exp.company}
-              </p>
-              <p className="truncate text-xs text-white/60">{exp.location}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* code body */}
-        <div className="px-4 md:px-6 py-4 md:py-6">
-          <code className="font-mono text-[12px] md:text-sm leading-relaxed">
-            <div className="opacity-95">
-              <span className="mr-2 text-pink-400">const</span>
-              <span className="mr-2 text-white">job</span>
-              <span className="mr-2 text-pink-400">=</span>
-              <span className="text-white/60">{"{"}</span>
+      <div className="ai-border-glow rounded-xl p-[1.5px] shadow-[0_18px_45px_-20px_rgba(99,102,241,0.35)]">
+        <div className="rounded-[10px] bg-[#2F2F2F] overflow-hidden">
+          {/* header row — click to expand/collapse */}
+          <button
+            type="button"
+            onClick={onToggle}
+            className="w-full flex items-center gap-3 px-4 md:px-6 py-3 border-b border-white/10 text-left hover:bg-white/[0.03] transition-colors"
+            aria-expanded={isActive}
+          >
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="h-3 w-3 rounded-full bg-red-400" />
+              <span className="h-3 w-3 rounded-full bg-orange-400" />
+              <span className="h-3 w-3 rounded-full bg-emerald-500" />
             </div>
 
-            <div className="mt-2">
-              <span className="ml-4 md:ml-6 mr-2 text-white">myRole:</span>
-              <span className="text-orange-300">"{exp.title}"</span>
-              <span className="text-white/60">,</span>
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              {exp.logo ? (
+                <img
+                  src={exp.logo}
+                  alt={`${exp.company} logo`}
+                  className="h-8 w-8 rounded-full object-cover border border-white/10 shrink-0"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              ) : null}
+
+              <div className="min-w-0">
+                <p className="truncate text-sm md:text-base font-semibold text-white">
+                  {exp.company}
+                </p>
+                <p className="truncate text-xs text-white/60">
+                  {exp.title} · {exp.location}
+                </p>
+              </div>
             </div>
 
-            <div>
-              <span className="ml-4 md:ml-6 mr-2 text-white">duration:</span>
-              <span className="text-orange-300">"{exp.duration}"</span>
-              <span className="text-white/60">,</span>
-            </div>
+            <ChevronDown
+              className={`h-4 w-4 text-white/50 shrink-0 transition-transform duration-300 ${
+                isActive ? "rotate-180 text-indigo-300" : ""
+              }`}
+            />
+          </button>
 
-            <div>
-              <span className="ml-4 md:ml-6 mr-2 text-white">type:</span>
-              <span className="text-orange-300">"{exp.type}"</span>
-              <span className="text-white/60">,</span>
-            </div>
+          {/* collapsible body — CSS grid-rows trick animates to/from
+              "auto" height smoothly without any JS height measurement */}
+          <div
+            className={`grid transition-[grid-template-rows] duration-400 ease-in-out ${
+              isActive ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <div className="px-4 md:px-6 py-4 md:py-6">
+                <code className="font-mono text-[12px] md:text-sm leading-relaxed">
+                  <div className="opacity-95">
+                    <span className="mr-2 text-pink-400">const</span>
+                    <span className="mr-2 text-white">job</span>
+                    <span className="mr-2 text-pink-400">=</span>
+                    <span className="text-white/60">{"{"}</span>
+                  </div>
 
-            <div className="mt-2">
-              <span className="ml-4 md:ml-6 mr-2 text-white">tools:</span>
-              <span className="text-white/60">{"["}</span>
-              {exp.tools.map((tag, i) => (
-                <span key={tag}>
-                  <span className="text-amber-300">"{tag}"</span>
-                  {i !== exp.tools.length - 1 ? (
-                    <span className="text-white/60">, </span>
-                  ) : null}
-                </span>
-              ))}
-              <span className="text-white/60">{"]"}</span>
-              <span className="text-white/60">,</span>
-            </div>
+                  <div className="mt-2">
+                    <span className="ml-4 md:ml-6 mr-2 text-white">
+                      myRole:
+                    </span>
+                    <span className="text-orange-300">"{exp.title}"</span>
+                    <span className="text-white/60">,</span>
+                  </div>
 
-            <div className="mt-2">
-              <span className="ml-4 md:ml-6 mr-2 text-white">impact:</span>
-              <span className="text-cyan-300">"{exp.summary}"</span>
-              <span className="text-white/60">,</span>
-            </div>
+                  <div>
+                    <span className="ml-4 md:ml-6 mr-2 text-white">
+                      duration:
+                    </span>
+                    <span className="text-orange-300">"{exp.duration}"</span>
+                    <span className="text-white/60">,</span>
+                  </div>
 
-            {exp.bullets?.length ? (
-              <div className="mt-2">
-                <span className="ml-4 md:ml-6 mr-2 text-white">
-                  highlights:
-                </span>
-                <span className="text-white/60">{"["}</span>
+                  <div>
+                    <span className="ml-4 md:ml-6 mr-2 text-white">
+                      type:
+                    </span>
+                    <span className="text-orange-300">"{exp.type}"</span>
+                    <span className="text-white/60">,</span>
+                  </div>
 
-                <div className="mt-2 space-y-1">
-                  {exp.bullets.map((b, idx) => (
-                    <div key={b} className="ml-8 md:ml-12">
-                      <span className="text-emerald-300">"{b}"</span>
-                      <span className="text-white/60">
-                        {idx === exp.bullets.length - 1 ? "" : ","}
+                  <div className="mt-2">
+                    <span className="ml-4 md:ml-6 mr-2 text-white">
+                      tools:
+                    </span>
+                    <span className="text-white/60">{"["}</span>
+                    {exp.tools.map((tag, i) => (
+                      <span key={tag}>
+                        <span className="text-amber-300">"{tag}"</span>
+                        {i !== exp.tools.length - 1 ? (
+                          <span className="text-white/60">, </span>
+                        ) : null}
                       </span>
+                    ))}
+                    <span className="text-white/60">{"]"}</span>
+                    <span className="text-white/60">,</span>
+                  </div>
+
+                  <div className="mt-2">
+                    <span className="ml-4 md:ml-6 mr-2 text-white">
+                      impact:
+                    </span>
+                    <span className="text-cyan-300">"{exp.summary}"</span>
+                    <span className="text-white/60">,</span>
+                  </div>
+
+                  {exp.bullets?.length ? (
+                    <div className="mt-2">
+                      <span className="ml-4 md:ml-6 mr-2 text-white">
+                        highlights:
+                      </span>
+                      <span className="text-white/60">{"["}</span>
+
+                      <div className="mt-2 space-y-1">
+                        {exp.bullets.map((b, idx) => (
+                          <div key={b} className="ml-8 md:ml-12">
+                            <span className="text-emerald-300">"{b}"</span>
+                            <span className="text-white/60">
+                              {idx === exp.bullets.length - 1 ? "" : ","}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="ml-4 md:ml-6">
+                        <span className="text-white/60">{"]"}</span>
+                        <span className="text-white/60">,</span>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  ) : null}
 
-                <div className="ml-4 md:ml-6">
-                  <span className="text-white/60">{"]"}</span>
-                  <span className="text-white/60">,</span>
-                </div>
+                  {exp.metrics?.length ? (
+                    <div className="mt-2">
+                      <span className="ml-4 md:ml-6 mr-2 text-white">
+                        metrics:
+                      </span>
+                      <span className="text-white/60">{"["}</span>
+                      {exp.metrics.map((m, i) => (
+                        <span key={m}>
+                          <span className="text-violet-300">"{m}"</span>
+                          {i !== exp.metrics.length - 1 ? (
+                            <span className="text-white/60">, </span>
+                          ) : null}
+                        </span>
+                      ))}
+                      <span className="text-white/60">{"]"}</span>
+                      <span className="text-white/60">,</span>
+                    </div>
+                  ) : null}
+
+                  <div className="mt-2 text-white/60">{"};"}</div>
+                </code>
               </div>
-            ) : null}
-
-            {exp.metrics?.length ? (
-              <div className="mt-2">
-                <span className="ml-4 md:ml-6 mr-2 text-white">metrics:</span>
-                <span className="text-white/60">{"["}</span>
-                {exp.metrics.map((m, i) => (
-                  <span key={m}>
-                    <span className="text-violet-300">"{m}"</span>
-                    {i !== exp.metrics.length - 1 ? (
-                      <span className="text-white/60">, </span>
-                    ) : null}
-                  </span>
-                ))}
-                <span className="text-white/60">{"]"}</span>
-                <span className="text-white/60">,</span>
-              </div>
-            ) : null}
-
-            <div className="mt-2 text-white/60">{"};"}</div>
-          </code>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -147,6 +183,8 @@ function CodeWindow({ exp }) {
 }
 
 export default function Experience() {
+  const [activeId, setActiveId] = useState(0); // first card open by default
+
   const experiences = useMemo(
     () => [
       {
@@ -305,23 +343,21 @@ export default function Experience() {
         </div>
       </div>
 
-      <div className="pt-8 space-y-8">
-        {experiences.map((exp, index) => (
-          <div
-            key={exp.id}
-            className="sticky"
-            style={{
-              top: 140 + index * 18,
-              zIndex: 10 + index,
-            }}
-          >
-            <div className="mx-auto max-w-4xl">
-              <CodeWindow exp={exp} />
-            </div>
-          </div>
-        ))}
+      <p className="mb-4 text-xs text-zinc-500">
+        Tap a role to expand it — click again to collapse.
+      </p>
 
-        <div className="h-[220px]" />
+      <div className="space-y-4">
+        {experiences.map((exp) => (
+          <CodeWindow
+            key={exp.id}
+            exp={exp}
+            isActive={activeId === exp.id}
+            onToggle={() =>
+              setActiveId((cur) => (cur === exp.id ? null : exp.id))
+            }
+          />
+        ))}
       </div>
     </div>
   );

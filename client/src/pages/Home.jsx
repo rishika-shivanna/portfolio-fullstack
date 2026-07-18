@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { Download, Github, Linkedin, Mail, Cpu } from "lucide-react";
+import { motion } from "framer-motion";
+import { Github, Linkedin, Mail, Cpu, Sparkles } from "lucide-react";
+import Reveal from "../components/Reveal";
 import profileImg from "../assets/profile.jpg";
 import ContactCards from "./Contact";
-import Navbar from "../components/Navbar";
 import Experience from "./Experience";
 import Projects from "./Projects";
 import Education from "./Education";
@@ -50,28 +51,30 @@ function useTypewriter(lines, speed = 22, pause = 1200) {
 function Section({ id, title, subtitle, children }) {
   return (
     <section id={id} className="scroll-mt-28">
-      <div className="rounded-3xl border border-zinc-200 bg-white/70 backdrop-blur p-6 md:p-8 shadow-sm">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="font-mono text-xs text-zinc-400">/{id}</p>
-            <h2 className="mt-1 text-2xl md:text-3xl font-extrabold text-zinc-900">
-              {title}
-            </h2>
-            {subtitle ? (
-              <p className="mt-2 text-sm text-zinc-600">{subtitle}</p>
-            ) : null}
+      <Reveal>
+        <div className="rounded-3xl border border-zinc-200 bg-white p-6 md:p-8 shadow-sm">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="font-mono text-xs text-zinc-400">/{id}</p>
+              <h2 className="mt-1 text-2xl md:text-3xl font-extrabold text-zinc-900">
+                {title}
+              </h2>
+              {subtitle ? (
+                <p className="mt-2 text-sm text-zinc-600">{subtitle}</p>
+              ) : null}
+            </div>
+
+            <a
+              href="#home"
+              className="hidden sm:inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-50 hover:scale-105 transition"
+            >
+              Top ↗
+            </a>
           </div>
 
-          <a
-            href="#home"
-            className="hidden sm:inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-50 transition"
-          >
-            Top ↗
-          </a>
+          <div className="mt-6">{children}</div>
         </div>
-
-        <div className="mt-6">{children}</div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -81,8 +84,6 @@ export default function Home({ jump = "home" }) {
     email: "mailto:rshivanna@binghamton.edu",
     linkedin: "https://www.linkedin.com/in/rishika-shivanna/",
     github: "https://github.com/rishika-shivanna",
-    resume:
-      "https://drive.google.com/file/d/1aLJ__57nCBCHP6bwRNzWvibZjnL0JqzW/view?usp=drive_link",
   };
 
   const statusLines = useMemo(
@@ -104,40 +105,63 @@ export default function Home({ jump = "home" }) {
   }, [jump]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-emerald-50">
-      {/* soft colorful blobs */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-300/30 blur-3xl" />
-        <div className="absolute top-40 -right-28 h-80 w-80 rounded-full bg-pink-300/30 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-emerald-300/25 blur-3xl" />
-      </div>
-
-      {/* Navbar at the top */}
-      <Navbar />
+    <div className="relative min-h-screen">
+      {/* subtle static grid backdrop (cheap — no blur, no canvas) */}
+      <div className="pointer-events-none absolute inset-0 ai-grid-bg [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)]" />
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-10 space-y-10 pb-16 pt-24">
         {/* HERO SECTION - Already defined in this component */}
         <section id="home" className="scroll-mt-28">
           <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-center">
             {/* LEFT */}
-            <div className="space-y-6">
+            <Reveal as="div" y={16} className="space-y-6">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200/60 bg-gradient-to-r from-indigo-100/80 to-purple-100/80 px-4 py-2 backdrop-blur">
+              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200/60 bg-gradient-to-r from-indigo-100/80 to-purple-100/80 px-4 py-2">
                 <Cpu className="h-4 w-4 text-indigo-700" />
                 <span className="text-sm font-semibold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
                   Full-Stack Developer & ML Enthusiast
                 </span>
               </div>
 
-              {/* Heading */}
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-zinc-900">
-                Hey there, <br />I am{" "}
-                <span className="bg-gradient-to-r from-indigo-700 via-purple-700 to-indigo-700 bg-clip-text text-transparent">
+              {/* Heading — reveals phrase by phrase on load */}
+              <motion.h1
+                className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-zinc-900"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: {
+                    transition: { staggerChildren: 0.18, delayChildren: 0.1 },
+                  },
+                }}
+              >
+                <motion.span
+                  className="block"
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+                  }}
+                >
+                  Hey there, I am
+                </motion.span>
+                <motion.span
+                  className="block bg-gradient-to-r from-indigo-700 via-purple-700 to-indigo-700 bg-clip-text text-transparent"
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+                  }}
+                >
                   RISHIKA SHIVANNA.
-                </span>
-                <br />
-                <span className="text-zinc-800">Turning Ideas into Code.</span>
-              </h1>
+                </motion.span>
+                <motion.span
+                  className="block text-zinc-800"
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+                  }}
+                >
+                  Turning Ideas into Code.
+                </motion.span>
+              </motion.h1>
 
               {/* Social icons */}
               <div className="flex items-center gap-4 pt-1">
@@ -178,19 +202,17 @@ export default function Home({ jump = "home" }) {
                 </a>
 
                 <a
-                  href={LINKS.resume}
-                  target="_blank"
-                  rel="noreferrer"
+                  href="#projects"
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-zinc-300 hover:border-indigo-300 text-zinc-900 px-6 py-3 text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02]"
                 >
-                  <Download className="h-4 w-4 group-hover:animate-bounce" />
-                  <span>GET RESUME</span>
+                  <Sparkles className="h-4 w-4 text-indigo-600 group-hover:rotate-12 transition-transform" />
+                  <span>SEE MY WORK</span>
                 </a>
               </div>
 
               {/* Status box */}
               <div className="pt-2">
-                <div className="rounded-xl bg-gradient-to-r from-white to-indigo-50/60 border border-indigo-100 p-4 shadow-md backdrop-blur-sm">
+                <div className="rounded-xl bg-gradient-to-r from-white to-indigo-50/60 border border-indigo-100 p-4 shadow-md">
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <div className="h-3 w-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-500" />
@@ -217,13 +239,10 @@ export default function Home({ jump = "home" }) {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
             {/* RIGHT - Code window */}
-            <div className="relative">
-              <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-indigo-400/15 blur-2xl" />
-              <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-purple-400/15 blur-2xl" />
-
+            <Reveal as="div" y={16} delay={0.15} className="relative">
               <div className="rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 text-white shadow-2xl">
                 <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-zinc-900/80">
                   <span className="h-3 w-3 rounded-full bg-red-400" />
@@ -281,12 +300,13 @@ export default function Home({ jump = "home" }) {
                   <div className="text-white/70">{"};"}</div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* ABOUT SECTION */}
         <section id="about" className="scroll-mt-28">
+          <Reveal>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* LEFT */}
             <div className="space-y-6">
@@ -359,6 +379,7 @@ export default function Home({ jump = "home" }) {
               </div>
             </div>
           </div>
+          </Reveal>
         </section>
 
         {/* EXPERIENCE */}
@@ -407,7 +428,6 @@ export default function Home({ jump = "home" }) {
             email="rshivanna@binghamton.edu"
             linkedin="https://www.linkedin.com/in/rishika-shivanna/"
             github="https://github.com/rishika-shivanna"
-            resumeUrl={LINKS.resume}
           />
         </Section>
       </div>
